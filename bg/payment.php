@@ -81,28 +81,7 @@ table td p
 </head>
 <body>
 	<div class="mainwrapper">
-		<div class="header">
-			<div class="left-content">
-				<a href="index.html"><img src="image/logo.png"/></a>
-			</div>
-			<div class="right-content">
-				<p>Welcome Guest | <a href="login.html">Sign in</a> / <a href="reg.html">Register</a></p>
-				<hr />
-				<p>
-					<a href="account.html"><img src="image/user.jpg"/>My Account</a>
-					<a href="shoppingcart.html"><img src="image/shoppingcart.png"/>View Cart</a>
-					<a href="checkout.html"><img src="image/shoppingcartout.png" />Checkout</a>
-				</p>
-			</div>
-			<div class="navigation" style="background-color: #323232">
-				<ul>
-					<li><a href="playstation.html"/>PLAYSTATION</a></li>
-					<li><a href="xbox.html"/>XBOX</a></li>
-					<li><a href="pc.html"/>PC</a></li>
-					<li><input type="text" size="13" placeholder="SEARCH HERE" style="text-align:right;"/></li>
-				</ul>
-			</div>
-		</div>
+		<?php require 'html/header.html'; ?>
 		
 		<div class="main-content">
 		
@@ -168,33 +147,7 @@ table td p
 			</div>
 		</div>
 		
-		<div class="footer">
-			<div class="content">
-				<p>INFORMATION</p>
-				<a href="#">About Us</a><br>
-				<a href="#">Terms & Conditions</a><br>
-				<a href="#">Privacy Policy</a><br>
-				<a href="#">Our News / Blog</a><br>
-			</div>
-			<div class="content">
-				<p>CONTACT US</p>
-				<p>+6018-7940870</p>
-				<p>+6011-35338702</p>
-				<p>support@bullsgaming.com.my</p>
-				<p>Or click <a href="#">here</a> to send us a message</p>
-			</div>
-			<div class="content">
-				<p>BUSINESS HOURS</p>
-				<p>Monday - Friday</p>
-				<p>10am - 6pm</p>
-				<p>Saturday</p>
-				<p>10am - 3pm</p>
-				<p>Holiday OFF</p>
-			</div>
-			<div class="bottom">
-				<p><small>Copyright &copy BULLsGaming.com.my. All rights reserved.</small></p> 
-			</div>
-		</div>
+		<?php require 'html/footer.html' ?>
 	</div>
 </body>
 </html>
