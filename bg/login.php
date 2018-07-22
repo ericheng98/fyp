@@ -64,10 +64,14 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php
+			require 'html/header.html'; 
+			include 'connection.php';
+		?>
 		<div class="signin">
 			<h2>Sign In</h2>
 			<div class="signinfrm">
+				<form name="loginfrm" method="post" action="">
 				<h3>Member Sign In</h3>
 				<p><i><small>**Please sign in with your personal or corporate login</small></i></p>
 				<p><span id="title">Email Address</span><br />
@@ -82,6 +86,7 @@
 				</p>
 				<p><span id="forget"><a href="#">Forget Password?</a></span></p>
 				<p><a href="account.html"><input type="submit" name="signinbtn" value="SIGN IN" /></a></p>
+				</form>
 			</div>
 			<div class="reg">
 				<h3>Not a Member? Register today and get these benefits:</h3>
@@ -97,3 +102,49 @@
 	</div>
 </body>
 </html>
+
+<?php
+
+if(isset($_POST["signinbtn"]))
+{
+	$useremail = $_POST["useremail"];
+	$password = $_POST["userpw"];
+	$login_as = $_POST["login_as"];
+	// echo $login_as;die;
+	switch($login_as)
+	{
+		case "superuser":
+		$sql = 
+		"
+			SELECT s.* FROM superuser s
+			WHERE s.superuser_email = $useremail
+			AND s.superuser_email = $password
+		";
+		// echo $sql;die;
+		break;
+
+		case "admin":
+		$sql = 
+		"
+			SELECT a.* FROM admin a
+			WHERE a.admin_email = $useremail
+			AND a.admin_email = $password
+		";
+		// echo $sql;die;
+		break;
+
+		case "customer":
+		$sql = 
+		"
+			SELECT c.* FROM customer c
+			WHERE c.customer_email = $useremail
+			AND c.customer_email = $password
+		";
+		// echo $sql;die;
+		break;
+	}
+
+		
+}
+
+?>
