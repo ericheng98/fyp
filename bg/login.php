@@ -1,7 +1,11 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>BULLs GAMING | Sign In</title>
+	<script src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="design.css">
 <style type="text/css">
 .signin
@@ -66,9 +70,11 @@
 	<div class="mainwrapper">
 		<?php
 			require 'html/header.html'; 
-			include 'connection.php';
 		?>
 		<div class="signin">
+			<div id="alert-side" style="display:none;">
+				<p>123</p>
+			</div>
 			<h2>Sign In</h2>
 			<div class="signinfrm">
 				<form name="loginfrm" method="post" action="">
@@ -108,7 +114,7 @@
 if(isset($_POST["signinbtn"]))
 {
 	$useremail = $_POST["useremail"];
-	$password = $_POST["userpw"];
+	$password = md5($_POST["userpw"]);
 	$login_as = $_POST["login_as"];
 	// echo $login_as;die;
 	switch($login_as)
@@ -117,8 +123,8 @@ if(isset($_POST["signinbtn"]))
 		$sql = 
 		"
 			SELECT s.* FROM superuser s
-			WHERE s.superuser_email = $useremail
-			AND s.superuser_email = $password
+			WHERE s.superuser_email = '$useremail'
+			AND s.superuser_password = '$password'
 		";
 		// echo $sql;die;
 		break;
@@ -127,8 +133,8 @@ if(isset($_POST["signinbtn"]))
 		$sql = 
 		"
 			SELECT a.* FROM admin a
-			WHERE a.admin_email = $useremail
-			AND a.admin_email = $password
+			WHERE a.admin_email = '$useremail'
+			AND a.admin_password = '$password'
 		";
 		// echo $sql;die;
 		break;
@@ -137,14 +143,45 @@ if(isset($_POST["signinbtn"]))
 		$sql = 
 		"
 			SELECT c.* FROM customer c
-			WHERE c.customer_email = $useremail
-			AND c.customer_email = $password
+			WHERE c.customer_email = '$useremail'
+			AND c.customer_password = '$password'
 		";
 		// echo $sql;die;
 		break;
 	}
 
-		
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);
+
+	if (mysqli_num_rows($result) != 1)
+	{
+?>
+		<script type="text/javascript">
+			console.log(123);
+		</script>
+<?php
+	}
+
+	else
+	{
+		switch ($login_as)
+		{
+			case 'admin':
+				$id = "admin_id";
+			break;
+
+			case 'superuser':
+				$id = "superuser_id";
+			break;
+
+			case 'customer':
+				$id = "customer_id";
+			break;
+		}
+
+		$_SESSION["sess_memid"] = $row[$id];
+		$_SESSION["loggedin"] = 1;
+	}
 }
 
 ?>
