@@ -5,7 +5,7 @@
 <html>
 <head>
 	<title>BULLs GAMING | Sign In</title>
-	<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="design.css">
 <style type="text/css">
 .signin
@@ -64,6 +64,17 @@
 {filter:brightness(80%);
  cursor: pointer;
 }
+
+#alert-side
+{
+	border: 1px solid red;
+	margin-top: 5px; 
+	padding: 5px; 
+	width: 500px;
+	background-color: pink;
+	color: #E52752;
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -73,7 +84,7 @@
 		?>
 		<div class="signin">
 			<div id="alert-side" style="display:none;">
-				<p>123</p>
+				<p id="msg"></p>
 			</div>
 			<h2>Sign In</h2>
 			<div class="signinfrm">
@@ -91,7 +102,7 @@
 				<input type="radio" name="login_as" value="customer" /> Customer
 				</p>
 				<p><span id="forget"><a href="#">Forget Password?</a></span></p>
-				<p><a href="account.html"><input type="submit" name="signinbtn" value="SIGN IN" /></a></p>
+				<p><input type="submit" name="signinbtn" value="SIGN IN" /></p>
 				</form>
 			</div>
 			<div class="reg">
@@ -104,11 +115,7 @@
 				<p><a href="reg.html"><input type="submit" name="createacc" value="CREATE AN ACCOUNT"/></a></p>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
-	</div>
-</body>
-</html>
-
+		
 <?php
 
 if(isset($_POST["signinbtn"]))
@@ -157,7 +164,12 @@ if(isset($_POST["signinbtn"]))
 	{
 ?>
 		<script type="text/javascript">
-			console.log(123);
+			// console.log(123);
+			var msg = "";
+			msg = "Invalid Username or Password! Please try again.";
+			$("#alert-side").css("display", "");
+			$("#msg").html(msg);
+			$("#alert-side").show().delay(2000).fadeOut();
 		</script>
 <?php
 	}
@@ -168,20 +180,32 @@ if(isset($_POST["signinbtn"]))
 		{
 			case 'admin':
 				$id = "admin_id";
+				$url = "adminpage.php";
 			break;
 
 			case 'superuser':
 				$id = "superuser_id";
+				$url = "adminpage.php";
 			break;
 
 			case 'customer':
 				$id = "customer_id";
+				$url = "account.php";
 			break;
 		}
 
 		$_SESSION["sess_memid"] = $row[$id];
 		$_SESSION["loggedin"] = 1;
+
+		header("Location: ".$url);
 	}
 }
 
 ?>
+
+<?php 
+	require 'html/footer.html' 
+?>
+	</div>
+</body>
+</html>
