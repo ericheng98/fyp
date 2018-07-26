@@ -113,10 +113,18 @@
 					<li>Track previous order</li>
 					<li>Store your address book, and much more</li>
 				</ul>
-				<p><a href="reg.html"><input type="submit" name="createacc" value="CREATE AN ACCOUNT"/></a></p>
+				<p><a href="reg.php"><input type="submit" name="createacc" value="CREATE AN ACCOUNT"/></a></p>
 			</div>
 		</div>
-		
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$("#username").html("Guest ");
+		$("#inout").html("Login");
+		$("#inout").attr("href","login.php");
+	})
+</script>	
+
 <?php
 
 if(isset($_POST["signinbtn"]))
@@ -124,6 +132,7 @@ if(isset($_POST["signinbtn"]))
 	$useremail = $_POST["useremail"];
 	$password = md5($_POST["userpw"]);
 	$login_as = $_POST["login_as"];
+	$acctype = $login_as;
 	// echo $login_as;die;
 	switch($login_as)
 	{
@@ -161,8 +170,8 @@ if(isset($_POST["signinbtn"]))
 		$sql = 
 		"
 			SELECT s.* FROM staff s
-			WHERE c.staff_email = '$useremail'
-			AND c.staff_password = '$password'
+			WHERE s.staff_email = '$useremail'
+			AND s.staff_password = '$password'
 		";
 		// echo $sql;die;
 		break;
@@ -192,27 +201,33 @@ if(isset($_POST["signinbtn"]))
 			case 'admin':
 				$id = "admin_id";
 				$url = "adminpage.php";
+				$name = "admin_name";
 			break;
 
 			case 'superuser':
 				$id = "superuser_id";
 				$url = "adminpage.php";
+				$name = "superuser_name";
 			break;
 
 			case 'customer':
 				$id = "customer_id";
 				$url = "account.php";
+				$name = "customer_name";
 			break;
 
 			case 'staff':
 				$id = "staff_id";
-				$url = "account.php";
+				$url = "adminpage.php";
+				$name = "staff_name";
 			break;
 		}
 
 		$_SESSION["sess_memid"] = $row[$id];
 		$_SESSION["loggedin"] = 1;
-
+		$_SESSION["sess_acc"] = $acctype;
+		$_SESSION["username"] = $row[$name];
+		// echo $_SESSION["username"];die;
 		header("Location: ".$url);
 	}
 }
