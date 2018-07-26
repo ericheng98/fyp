@@ -97,9 +97,10 @@
 				<p><span id="title">Password</span><br />
 				<input type="password" name="userpw" required /><br /></p>
 				<p><span id="title">Login As</span><br /><br />
+				<input type="radio" name="login_as" value="customer" /> Customer
 				<input type="radio" name="login_as" value="superuser" /> Superuser
 				<input type="radio" name="login_as" value="admin" /> Admin
-				<input type="radio" name="login_as" value="customer" /> Customer
+				<input type="radio" name="login_as" value="staff" /> Staff
 				</p>
 				<p><span id="forget"><a href="#">Forget Password?</a></span></p>
 				<p><input type="submit" name="signinbtn" value="SIGN IN" /></p>
@@ -155,6 +156,16 @@ if(isset($_POST["signinbtn"]))
 		";
 		// echo $sql;die;
 		break;
+
+		case "staff":
+		$sql = 
+		"
+			SELECT s.* FROM staff s
+			WHERE c.staff_email = '$useremail'
+			AND c.staff_password = '$password'
+		";
+		// echo $sql;die;
+		break;
 	}
 
 	$result = mysqli_query($conn, $sql);
@@ -190,6 +201,11 @@ if(isset($_POST["signinbtn"]))
 
 			case 'customer':
 				$id = "customer_id";
+				$url = "account.php";
+			break;
+
+			case 'staff':
+				$id = "staff_id";
 				$url = "account.php";
 			break;
 		}
