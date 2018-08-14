@@ -2,6 +2,7 @@
 // echo $_SESSION["loggedin"];die;
 	if($_SESSION["loggedin"] != 1)
 	{
+		
 ?>
 
 <script type="text/javascript">
@@ -29,6 +30,5 @@
 </script>
 
 <?php
-	session_destroy();
 	}
 ?>
