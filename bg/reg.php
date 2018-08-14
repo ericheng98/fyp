@@ -1,3 +1,4 @@
+<?php include("connection.php");?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,22 +67,30 @@
  cursor: pointer;
 }
 </style>
+<script type="text/javascript">
+	function check()
+	{
+		var checkBox = document.getElementById("myCheck");
+	 if (checkBox.checked != true)
+	 {
+	 	alert("You are not accept for the term & condition");
+	 }
+	}
+	
+</script>
 </head>
 <body>
 	<div class="mainwrapper">
 		<?php require 'html/header.html'; ?>
 		<div class="regf">
 			<p id="title">Create Account</p>
+			<form name="regform" method="post" action="">
 				<div class="info">
 					<p id="subtopic">Personal Information</p><hr />
 				<table>
 					<tr>
-						<td>First Name*</td>
-						<td><input type="text" name="userfnm" size="30"/><td>
-					</tr>
-					<tr>
-						<td>Last Name*</td>
-						<td><input type="text" name="userlnm" size="30"/><td>
+						<td>Name*</td>
+						<td><input type="text" name="usernm" size="30"/><td>
 					</tr>
 					<tr>
 						<td>Birthday*</td>
@@ -98,11 +107,11 @@
 				<table>
 					<tr>
 						<td>Email*</td>
-						<td><input type="email" name="usermail" placeholder="Eg: abc12345@hotmail.com"/></td>
+						<td><input type="email" name="usermail" id="usermail" placeholder="Eg: abc12345@hotmail.com"/></td>
 					</tr>
 					<tr>
 						<td>Confirm Email*</td>
-						<td><input type="email" name="userconfirmmail" /></td>
+						<td><input type="email" name="userconfirmmail" id="userconfirmmail"/></td>
 					</tr>
 					<tr>
 						<td>Password*</td>
@@ -163,12 +172,80 @@
 				</table>
 				</div>
 				<div class="termcondition">
-					<p><hr /><input type="checkbox" name="acpt" value="1" /><small>I verify that I am above 18 years old and agree with the 
+					<p><hr /><input type="checkbox" name="acpt" id="myCheck" value="1" /><small>I verify that I am above 18 years old and agree with the 
 					<span id="term"><a href="#">Terms & Conditions</a></span> of CocoaRich</small></p>
-					<a href="#"><input type="submit" name="regbtn" value="Register" /></a>
+					<a href="#"><input type="submit" name="regbtn" value="Register" onClick="check()"/></a>
 				</div>
 		</div>
+	</form>
 		<?php require 'html/footer.html' ?>
 	</div>
 </body>
 </html>
+
+<?php 
+
+if(isset($_POST["regbtn"]))
+{
+	$username = $_POST["usernm"];
+	$userbirthday = $_POST["userbd"];
+	$usericno = $_POST["useric"];
+	$useremail = $_POST["usermail"];
+	$userconfirmemail = $_POST["userconfirmmail"];
+	$userpassword = md5($_POST["userps"]);
+	$userconfirmpassword = md5($_POST["userconfirmps"]);
+	$useraddress = $_POST["useradd"];
+	$usercountry = $_POST["country"];
+	$userstate = $_POST["state"];
+	$userc = $_POST["usercity"];
+	$userpostcode = $_POST["userpc"];
+	$userphoneno = $_POST["userhp"];
+
+
+	$sql = "select * from customer where customer_email = '$useremail'";
+	$result = mysqli_query($conn,$sql);
+
+	if(mysqli_num_rows($result) != 0)
+	{
+		?>
+		<script type="text/javascript">
+			alert("Email already existed");
+		</script>
+		<?php
+	}
+	else
+	{	
+		if($useremail != $userconfirmemail)
+		{
+			?>
+			<script type="text/javascript">
+				alert("Email and confirm Email are not same!");
+			</script>
+			<?php
+		}
+		else
+		{
+			if($userpassword != $userconfirmpassword)
+			{
+			?>
+				<script type="text/javascript">
+					alert("Password and confirm password are not same!");
+				</script>
+				<?php
+			}
+			else
+			{
+				$sql2 = 
+				"insert into customer (customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) values ('$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')";
+				mysqli_query($conn,$sql2);
+				?>
+				<script type="text/javascript">
+					alert(" <?php echo'Thank You '.$username.'. Your registration is successful'; ?>");
+				</script>
+				<?php
+			}
+		}
+	}
+	mysqli_close($conn);
+}
+?>
