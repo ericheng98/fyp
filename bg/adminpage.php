@@ -1,7 +1,11 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>BULLs GAMING | Admin</title>
+<script src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="design.css">
 <style type="text/css">
 .main
@@ -68,7 +72,14 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html';
+			if($_SESSION["loggedin"] != 1)
+			{
+				header("Location: login.php");
+			}
+			require 'include/identity.php';
+		?>
 		<div class="main">
 			<div class="left">
 				<div id="reference">
