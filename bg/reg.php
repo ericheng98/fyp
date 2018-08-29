@@ -79,15 +79,15 @@
 				<table>
 					<tr>
 						<td>Name*</td>
-						<td><input type="text" name="usernm" size="30"/><td>
+						<td><input type="text" name="usernm" size="30" required/><td>
 					</tr>
 					<tr>
 						<td>Birthday*</td>
-						<td><input type="date" name="userbd"/></td>
+						<td><input type="date" name="userbd" required/></td>
 					</tr>
 					<tr>
 						<td>I/C Number*</td>
-						<td><input type="text" name="useric"/></td>
+						<td><input type="text" name="useric" required/></td>
 					</tr>
 				</table>
 				</div>
@@ -96,19 +96,19 @@
 				<table>
 					<tr>
 						<td>Email*</td>
-						<td><input type="email" name="usermail" id="usermail" placeholder="Eg: abc12345@hotmail.com"/></td>
+						<td><input type="email" name="usermail" id="usermail" placeholder="Eg: abc12345@hotmail.com" required/></td>
 					</tr>
 					<tr>
 						<td>Confirm Email*</td>
-						<td><input type="email" name="userconfirmmail" id="userconfirmmail"/></td>
+						<td><input type="email" name="userconfirmmail" id="userconfirmmail" required/></td>
 					</tr>
 					<tr>
 						<td>Password*</td>
-						<td><input type="password" name="userps" placeholder="At least consist 8-16 words and numbers"/></td>
+						<td><input type="password" name="userps" placeholder="At least consist 8-16 words and numbers" required/></td>
 					</tr>
 					<tr>
 						<td>Confirm Password*</td>
-						<td><input type="password" name="userconfirmps" /></td>
+						<td><input type="password" name="userconfirmps" required/></td>
 					</tr>
 				</table>
 				</div>
@@ -117,7 +117,7 @@
 				<table>
 					<tr>
 						<td>Address*</td>
-						<td><input type="text" name="useradd" size="80" /></td>
+						<td><input type="text" name="useradd" size="80" required/></td>
 					</tr>
 					<tr>
 						<td>Country*</td>
@@ -128,7 +128,7 @@
 					</tr>
 					<tr>
 						<td>State*</td>
-						<td><select name="state">
+						<td><select name="state" required>
 								<option value="default" selected>Choose Your State</option>
 								<option value="jh">Johor</option>
 								<option value="kd">Kedah</option>
@@ -148,15 +148,15 @@
 					</tr>
 					<tr>
 						<td>City*</td>
-						<td><input type="text" name="usercity"/></td>
+						<td><input type="text" name="usercity" required/></td>
 					</tr>
 					<tr>
 						<td>Postcode*</td>
-						<td><input type="text" name="userpc" size="5" /></td>
+						<td><input type="text" name="userpc" size="5" required/></td>
 					</tr>
 					<tr>
 						<td>Phone Number*</td>
-						<td><input type="text" name="userhp" size="15" /></td>
+						<td><input type="text" name="userhp" size="15" required/></td>
 					</tr>
 				</table>
 				</div>
@@ -172,8 +172,7 @@
 </body>
 </html>
 
-<?php 
-
+<?php
 if(isset($_POST["regbtn"]))
 {
 	$username = $_POST["usernm"];
