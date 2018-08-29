@@ -67,17 +67,6 @@
  cursor: pointer;
 }
 </style>
-<script type="text/javascript">
-	function check()
-	{
-		var checkBox = document.getElementById("myCheck");
-	 if (checkBox.checked != true)
-	 {
-	 	alert("You are not accept for the term & condition");
-	 }
-	}
-	
-</script>
 </head>
 <body>
 	<div class="mainwrapper">
@@ -174,7 +163,7 @@
 				<div class="termcondition">
 					<p><hr /><input type="checkbox" name="acpt" id="myCheck" value="1" /><small>I verify that I am above 18 years old and agree with the 
 					<span id="term"><a href="#">Terms & Conditions</a></span> of CocoaRich</small></p>
-					<a href="#"><input type="submit" name="regbtn" value="Register" onClick="check()"/></a>
+					<a href="#"><input type="submit" name="regbtn" value="Register" /></a>
 				</div>
 		</div>
 	</form>
@@ -235,14 +224,27 @@ if(isset($_POST["regbtn"]))
 			}
 			else
 			{
-				$sql2 = 
-				"insert into customer (customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) values ('$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')";
-				mysqli_query($conn,$sql2);
-				?>
-				<script type="text/javascript">
-					alert(" <?php echo'Thank You '.$username.'. Your registration is successful'; ?>");
-				</script>
-				<?php
+				if(!isset($_POST["acpt"]))
+				{
+					?>
+					<script type="text/javascript">
+						alert("You are not accept for the term & condition");
+					</script>
+					<?php
+					
+				}
+				else
+				{
+					$sql2 = 
+					"insert into customer (customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) values ('$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')";
+					mysqli_query($conn,$sql2);
+					?>
+					<script type="text/javascript">
+						alert(" <?php echo'Thank You '.$username.'. Your registration is successful'; ?>");
+					</script>
+					<?php
+				}
+				
 			}
 		}
 	}
