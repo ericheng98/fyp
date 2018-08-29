@@ -1,7 +1,11 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>BULLs GAMING | Home </title>
+<script src="js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="design.css">
 <style type="text/css">
 .slider img
@@ -59,7 +63,27 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html';
+			if ($_SESSION["loggedin"] == 1) 
+			{
+				require 'include/identity.php';
+			}
+			else
+			{
+		?>
+
+				<script type="text/javascript">
+					$(document).ready(function()
+					{
+						$("#username").html("Guest ");
+						$("#inout").html("Login");
+						$("#inout").attr("href","login.php");
+					})
+				</script>
+		<?php
+			}
+		?>
 		<div class="slider">
 			<a href="#"><img src="image/sale.jpg"/></a>
 		</div>

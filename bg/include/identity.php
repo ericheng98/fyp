@@ -1,5 +1,5 @@
 <?php
-// echo $_SESSION["loggedin"];die;
+// echo $_SESSION["username"];die;
 	if($_SESSION["loggedin"] != 1)
 	{
 		
@@ -25,7 +25,7 @@
 	var name = "<?php echo $_SESSION["username"]; ?> ";
 	$("#username").html(name);
 	$("#inout").html("Sign Out");
-	$("#inout").attr("href","index.php");
+	$("#inout").attr("href","logout.php");
 
 </script>
 

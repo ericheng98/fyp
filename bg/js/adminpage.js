@@ -1,40 +1,19 @@
-$(window).on('load', function()
-{
-	$("#statcontain").show();
-	$("#historycontain").hide();
-	$("#productcontain").hide();
-	$("#staffcontain").hide();
-
-});
-
 $(document).on('click', '#history', function()
 {
-	$("#statcontain").hide();
-	$("#productcontain").hide();
-	$("#staffcontain").hide();
-	$("#historycontain").show();
+	window.location.replace("aorderhistory.php");
 });
 
 $(document).on('click', '#stat', function()
 {
-	$("#statcontain").show();
-	$("#historycontain").hide();
-	$("#productcontain").hide();
-	$("#staffcontain").hide();
+	window.location.replace("adminpage.php");
 });
 
 $(document).on('click', '#product', function()
 {
-	$("#statcontain").hide();
-	$("#historycontain").hide();
-	$("#productcontain").show();
-	$("#staffcontain").hide();
+	window.location.replace("aproduct.php");
 });
 
 $(document).on('click', '#staff', function()
 {
-	$("#statcontain").hide();
-	$("#historycontain").hide();
-	$("#productcontain").hide();
-	$("#staffcontain").show();
+	window.location.replace("astaff.php");
 });

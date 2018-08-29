@@ -1,7 +1,13 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>BULLs GAMING | Admin</title>
+	
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/adminpage.js"></script>
 <link rel="stylesheet" type="text/css" href="design.css">
 <style type="text/css">
 .main
@@ -11,29 +17,22 @@
 	overflow: auto;
 }
 .left
-{	
-	font-size: 1.5em;
+{
 	float: left;
 	margin: 30px;
+	font-size: 1.5em;
 }
-#reference
+.reference
 {
-	display: inline-block;
 	padding: 10px 10px;
+	display: inline-block;
 	border-right: 1px solid silver;
 }
-#reference:hover
+.reference:hover
 {
 	background-color: #8CC63F;
-}
-#reference a
-{
-	text-decoration: none;
-	color: black;
-}
-#reference a:hover
-{
 	color: white;
+	cursor: pointer;
 }
 .right
 {
@@ -74,25 +73,32 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html';
+			if($_SESSION["loggedin"] != 1)
+			{
+				header("Location: http://localhost/fyp/bg/login.php");
+			}
+			require 'include/identity.php'; 
+		?>
 		<div class="main">
 			<div class="left">
-				<div id="reference">
-					<a href="adminpage.html">Overall Statistics</a>
+				<div class="reference" id="stat">
+					Overall Statistics
 				</div>
-				<div id="reference">
-					<a href="aorderhistory.html">Order History</a>
+				<div class="reference" id="history">
+					Order History
 				</div>
-				<div id="reference">
-					<a href="aproduct.html">Product</a>
+				<div class="reference" id="product">
+					Product
 				</div>
-				<div id="reference">
-					<a href="astaff.html">Staff</a>
+				<div class="reference" id="staff">
+					Staff
 				</div>
 			</div>
 			<div class="right">
 				<h1>Product</h1>
-				<a href="addproduct.html"><button name="newbtn">ADD NEW PRODUCT</button></a>
+				<a href="addproduct.php"><button name="newbtn">ADD NEW PRODUCT</button></a>
 				<table>
 					<tr class="topic">
 						<th style="width: 3%">#</th>
