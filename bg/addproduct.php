@@ -47,7 +47,7 @@
 {
 	padding: 5px;
 }
-button
+input[type="submit"]
 {
 	height: 30px;
 	font-size: 1em;
@@ -56,7 +56,7 @@ button
 	border: 0px;
 	color: white;
 }
-button:hover
+input[type="submit"]:hover
 {
 	filter:brightness(80%);
 	cursor: pointer;
@@ -94,20 +94,16 @@ button:hover
 				<form method="post" action="" name="addProductForm">
 					<table>
 						<tr>
-							<td>Product ID</td>
-							<td><input type="text" name="idfrm" maxlength="7" placeholder="Eg: PS40001" /></td>
-						</tr>
-						<tr>
 							<td>Product Name</td>
 							<td><input type="text" name="namefrm" maxlength="100" size="50" /></td>
 						</tr>
 						<tr>
 							<td>Product Image</td>
-							<td><input type="file" name="imagefrm" accept=".jpg,.png"/></td>
+							<td><input type="file" name="imagefrm" accept="image/*" /></td>
 						</tr>
 						<tr>
 							<td>Product Price</td>
-							<td>RM <input type="text" maxlength="6" /></td>
+							<td>RM <input type="text" maxlength="6" name="price" /></td>
 						</tr>
 						<tr>
 							<td>Product Stock</td>
@@ -127,7 +123,7 @@ button:hover
 									while($rowPlatform = mysqli_fetch_assoc($resultPlatform))
 									{
 								?>
-										<option value="<?php echo $rowPlatform["platform_code"]; ?>"><?php echo $rowPlatform["platform_code"]; ?></option>
+										<option value="<?php echo $rowPlatform["platform_id"]; ?>"><?php echo $rowPlatform["platform_code"]; ?></option>
 								<?php
 									}
 								?>
@@ -145,21 +141,21 @@ button:hover
 									$resultCategory = mysqli_query($conn, $sqlCategory);
 									while($rowCategory = mysqli_fetch_assoc($resultCategory))
 									{
-									 echo'<input type="checkbox" name="cat" value='.$rowCategory["category_code"].' >'.$rowCategory["category_name"].' ';
+									 echo'<input type="checkbox" name="category" value='.$rowCategory["category_id"].' >'.$rowCategory["category_name"].' ';
 									}
 								?>
 							</td>
 						</tr>
 						<tr>
 							<td>Product Release Date</td>
-							<td><input type="date" name="proreleasedate"/></td>
+							<td><input type="date" name="releasedate"/></td>
 						</tr>
 						<tr>
-							<td>Product Publisher</td>
-							<td><input type="text" name="publisherfrm" maxlength="50" placeholder="Eg: CAPCOM"/></td>
+							<td>Product Description</td>
+							<td><textarea rows="4" cols="50" name="description"></textarea></td>
 						</tr>
 					</table>
-					<button name="addbtn">ADD NEW PRODUCT</button>
+					<input type="submit" name="addbtn" value="ADD NEW PRODUCT" />
 				</form>
 			</div>
 		</div>
@@ -170,7 +166,73 @@ button:hover
 <?php
 if(isset($_POST["addbtn"]))
 {
+	$pname = $_POST["namefrm"];
+
 	$img = $_POST["imagefrm"];
-	echo $img;die;
+
+	$target = "images/".basename($_FILES['imagefrm']['name']);
+	$image = $_FILES['imagefrm']['name'];
+
+	$price = $_POST["price"];
+	$stock = $_POST["stock"];
+	$platform = $_POST["platform"];
+	$category = $_POST["category"];
+	$releasedate = $_POST["releasedate"];
+	$description = $_POST["description"];
+
+	$date = str_replace('-', '', $releasedate);
+	$num = rand(0,10000);
+	$code = $platform."/".$date."/".$num;
+
+	$sqlcode =
+	"
+		SELECT product_code 
+		FROM product
+		WHERE product_code = '$code'
+	";
+	$result = mysqli_query($conn, $sqlcode);
+
+	if(mysqli_num_rows($result) != 0)
+	{
+		$code = $platform."/".$date."/".rand(0,10000);
+	}
+	// echo $platform;
+	// echo $code;die;
+	$sql = 
+	"
+		INSERT INTO product 
+		(product_code, product_name, product_price, product_released_date, product_description, product_stock, product_image, product_isActive, category_id, platform_id)
+		VALUES
+		('$code', '$pname', $price, '$releasedate', '$description', $stock, '$img', 1, $category, $platform)
+	";
+
+	// echo $sql;die;
+	mysqli_query($conn, $sql);
+	if(move_uploaded_file($_FILES["imagefrm"]['tmp_name'],$target))
+	{
+		$message = "GOT";
+	}
+	else 
+	{
+		$message = "NO";
+	}
+
+	// echo $target;die;
+	?>
+		<script type="text/javascript">
+			alert("Product is added");
+		</script>
+	<?php
+
+	// if(move_uploaded_file($_FILES['imagefrm']['tmp_name'],$target))
+	// {
+	// 	$message = "GOT";
+	// }
+	// else 
+	// {
+	// 	$message = "NO";
+	// }
+
+	// echo $msg;die;
 }
 ?>
