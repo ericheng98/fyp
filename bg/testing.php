@@ -1,7 +1,11 @@
 <?php
-require 'html/header.html';
-require 'html/footer.html';
-?>
-<style>
-<?php require 'design.css'; ?>
-</style>
+
+for($i=0;$i<10;$i++)
+{
+	$sql = 
+	"	
+		INSERT INTO shoes (..) VALUES ( ... )$i
+	";
+
+	echo $sql;
+}

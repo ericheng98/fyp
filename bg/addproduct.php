@@ -61,6 +61,17 @@ input[type="submit"]:hover
 	filter:brightness(80%);
 	cursor: pointer;
 }
+#alert-side
+{
+	border: 1px solid red;
+	margin-top: 5px; 
+	padding: 5px; 
+	width: 500px;
+	background-color: pink;
+	color: #E52752;
+	font-weight: bold;
+	font-size: 1.3em;
+}
 </style>
 </head>
 <body>
@@ -75,6 +86,7 @@ input[type="submit"]:hover
 			require 'include/identity.php';
 		?>
 		<div class="main">
+
 			<div class="left">
 				<div class="reference" id="stat">
 					Overall Statistics
@@ -90,8 +102,11 @@ input[type="submit"]:hover
 				</div>
 			</div>
 			<div class="right">
+				<div id="alert-side" style="display:none;">
+					<p id="msg"></p>
+				</div>
 				<h1>Add NEW Product</h1>
-				<form method="post" action="" name="addProductForm">
+				<form method="POST" action="addproduct.php" name="addProductForm" enctype="multipart/form-data">
 					<table>
 						<tr>
 							<td>Product Name</td>
@@ -99,7 +114,7 @@ input[type="submit"]:hover
 						</tr>
 						<tr>
 							<td>Product Image</td>
-							<td><input type="file" name="imagefrm" accept="image/*" /></td>
+							<td><input type="file" name="image" /></td>
 						</tr>
 						<tr>
 							<td>Product Price</td>
@@ -159,7 +174,9 @@ input[type="submit"]:hover
 				</form>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html'; 
+		?>
 	</div>
 </body>
 </html>
@@ -168,15 +185,19 @@ if(isset($_POST["addbtn"]))
 {
 	$pname = $_POST["namefrm"];
 
-	$img = $_POST["imagefrm"];
-
-	$target = "images/".basename($_FILES['imagefrm']['name']);
-	$image = $_FILES['imagefrm']['name'];
+	// $img = $_POST["image"];
+	if(!isset($_POST["category"]))
+	{
+		$category = "";
+	}
+	else
+	{
+		$category = $_POST["category"];
+	}
 
 	$price = $_POST["price"];
 	$stock = $_POST["stock"];
 	$platform = $_POST["platform"];
-	$category = $_POST["category"];
 	$releasedate = $_POST["releasedate"];
 	$description = $_POST["description"];
 
@@ -197,42 +218,96 @@ if(isset($_POST["addbtn"]))
 		$code = $platform."/".$date."/".rand(0,10000);
 	}
 	// echo $platform;
-	// echo $code;die;
+	// echo $category;die;
+	$target = "images/".basename($_FILES['image']['name']);
+	$image = $_FILES['image']['name'];
+
 	$sql = 
 	"
 		INSERT INTO product 
 		(product_code, product_name, product_price, product_released_date, product_description, product_stock, product_image, product_isActive, category_id, platform_id)
 		VALUES
-		('$code', '$pname', $price, '$releasedate', '$description', $stock, '$img', 1, $category, $platform)
+		('$code', \"$pname\", $price, '$releasedate', \"$description\", $stock, '$image', 1, $category, $platform)
 	";
 
 	// echo $sql;die;
-	mysqli_query($conn, $sql);
-	if(move_uploaded_file($_FILES["imagefrm"]['tmp_name'],$target))
-	{
-		$message = "GOT";
-	}
-	else 
-	{
-		$message = "NO";
-	}
+	$sqlproduct = 
+	"
+		SELECT * FROM product 
+		WHERE product_name = \"$pname\"
+	";
 
-	// echo $target;die;
+	$resultDuplicate = mysqli_query($conn, $sqlproduct);
+
+	if($pname == "")
+	{
+		$message = "Please key in Product Name!";
+	}
+	else if($image == "")
+	{
+		$message = "Please upload a photo for your product!";
+	}
+	else if($price == "")
+	{
+		$message = "Please enter a number for product price!";
+	}
+	else if($stock == "")
+	{
+		$message = "Please enter price stock!";
+	}
+	else if($platform == "")
+	{
+		$message = "Please select your products platform!";
+	}
+	else if($category == "")
+	{
+		$message = "Please select your product category!";
+	}
+	else if($releasedate == "")
+	{
+		$message = "Please choose the release date of your product!";
+	}
+	else if(mysqli_num_rows($resultDuplicate) != 0)
+	{
+		$message = "This product has already existed!";
+	}
+	else
+	{
+		mysqli_query($conn, $sql);
+		if(move_uploaded_file($_FILES['image']['tmp_name'],$target))
+		{
+			$msg = "GOT";
+		}
+		else 
+		{
+			$msg = "NO";
+		}
+		$message = "Prodcuct has successfully added!";
+		$condition = 1;
+		
+	}
 	?>
 		<script type="text/javascript">
-			alert("Product is added");
+			var msg = "<?php echo $message; ?>";
+			var a = "<?php echo $condition ?>";
+			if(a == "1")
+			{
+				$("#alert-side").css("display", "");
+				$("#alert-side").css("background-color", "#8BFC81");
+				$("#alert-side").css("color", "green");
+				$('#alert-side').css("border", "1px solid green");
+				$("#msg").html(msg);
+				$("#alert-side").show().delay(2000).fadeOut();
+			}
+			else
+			{
+				$("#alert-side").css("display", "");
+				$("#msg").html(msg);
+				$("#alert-side").show().delay(2000).fadeOut();
+			}
 		</script>
 	<?php
 
-	// if(move_uploaded_file($_FILES['imagefrm']['tmp_name'],$target))
-	// {
-	// 	$message = "GOT";
-	// }
-	// else 
-	// {
-	// 	$message = "NO";
-	// }
-
-	// echo $msg;die;
 }
+
 ?>
