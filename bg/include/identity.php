@@ -1,6 +1,7 @@
 <?php
 // echo $_SESSION["username"];die;
-	if($_SESSION["loggedin"] != 1)
+	// if($_SESSION["loggedin"] != 1)
+	if(!isset($_SESSION["loggedin"]))
 	{
 		
 ?>

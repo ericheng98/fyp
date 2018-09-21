@@ -65,24 +65,15 @@
 	<div class="mainwrapper">
 		<?php 
 			require 'html/header.html';
-			if ($_SESSION["loggedin"] == 1) 
-			{
+			// if (isset($_SESSION)) 
+			// {
 				require 'include/identity.php';
-			}
-			else
-			{
-		?>
+			// }
+			// else
+			// {
+		
 
-				<script type="text/javascript">
-					$(document).ready(function()
-					{
-						$("#username").html("Guest ");
-						$("#inout").html("Login");
-						$("#inout").attr("href","login.php");
-					})
-				</script>
-		<?php
-			}
+				
 		?>
 		<div class="slider">
 			<a href="#"><img src="image/sale.jpg"/></a>
