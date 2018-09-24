@@ -200,13 +200,13 @@ if(isset($_POST["signinbtn"]))
 		{
 			case 'admin':
 				$id = "admin_id";
-				$url = "adminpage.php";
+				$url = "aorderhistory.php";
 				$name = "admin_name";
 			break;
 
 			case 'superuser':
 				$id = "superuser_id";
-				$url = "adminpage.php";
+				$url = "astaff.php";
 				$name = "superuser_name";
 			break;
 
@@ -218,7 +218,7 @@ if(isset($_POST["signinbtn"]))
 
 			case 'staff':
 				$id = "staff_id";
-				$url = "adminpage.php";
+				$url = "aorderhistory.php";
 				$name = "staff_name";
 			break;
 		}

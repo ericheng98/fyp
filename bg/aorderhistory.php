@@ -60,18 +60,11 @@
 <body>
 	<div class="mainwrapper">
 		<?php 
-			require 'html/header.html'; 
-			if($_SESSION["loggedin"] != 1)
-			{
-				header("Location: http://localhost/fyp/bg/login.php");
-			}
+			require 'html/header.html';
 			require 'include/identity.php';
 		?>
 		<div class="main">
 			<div class="left">
-				<div class="reference" id="stat">
-					Overall Statistics
-				</div>
 				<div class="reference" id="history">
 					Order History
 				</div>

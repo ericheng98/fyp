@@ -69,23 +69,36 @@
 	filter:brightness(80%);
 	cursor: pointer;
 }
+
+.ProductImg
+{
+	width: 40%;
+	margin-left: 30%;
+}
+
+.align
+{
+	text-align: center;
+}
 </style>
 </head>
 <body>
 	<div class="mainwrapper">
 		<?php 
 			require 'html/header.html';
-			if($_SESSION["loggedin"] != 1)
-			{
-				header("Location: http://localhost/fyp/bg/login.php");
-			}
-			require 'include/identity.php'; 
+			require 'include/identity.php';
+			$sqlProduct =
+			"
+				SELECT p.*, plt.*
+				FROM product p
+				LEFT JOIN platform plt ON p.platform_id = plt.platform_id 
+				WHERE p.product_isActive = 1
+				ORDER BY p.product_id ASC
+			";
+			$result = mysqli_query($conn, $sqlProduct);
 		?>
 		<div class="main">
 			<div class="left">
-				<div class="reference" id="stat">
-					Overall Statistics
-				</div>
 				<div class="reference" id="history">
 					Order History
 				</div>
@@ -102,28 +115,37 @@
 				<table>
 					<tr class="topic">
 						<th style="width: 3%">#</th>
-						<th style="width: 7%">Product ID</th>
-						<th style="width: 20%">Product Name</th>
+						<th style="width: 8%">Product ID</th>
+						<th style="width: 19%">Product Name</th>
 						<th style="width: 25%">Product Image</th>
 						<th style="width: 8%">Platform</th>
 						<th style="width: 8%">Price(RM)</th>
 						<th style="width: 10%">Release Date</th>
 						<th style="width: 10%">Edit/Remove</th>
 					</tr>
+				<?php  
+					while($row = mysqli_fetch_assoc($result))
+					{
+
+				?>
 					<tr>
-						<td>1</td>
-						<td style="color: blue">PS4A031</td>
-						<td><a href="#">Valkyrie Revolution</a></td>
-						<td><img src="image/deals1.jpg"/></td>
-						<td>PS4</td>
-						<td>159.00</td>
-						<td>27/06/2017</td>
-						<td>
-							<a href="editp.html"><img src="image/edit.png" style="width: 25%"/></a>  
+						<th><?php echo $row["product_id"]?></th>
+						<td style="color: blue"><?php echo $row["product_code"]?></td>
+						<td><a href="#"><?php echo $row["product_name"]?></a></td>
+						<td><img src="image/<?php echo $row['product_image']?>"  class="ProductImg" /></td>
+						<td class="align"><?php echo $row["platform_code"]?></td>
+						<td class="align"><?php echo $row["product_price"]?></td>
+						<td class="align"><?php echo $row["product_released_date"]?></td>
+						<td class="align">
+							<a href="editp.php"><img src="image/edit.png" style="width: 25%"/></a>
+							<br /> <br /> 
 							<img src="image/remove.png" style="width: 25%"/>
 						</td>
 					</tr>
-					<tr>
+				<?php
+					}
+				?>
+					<!-- <tr>
 						<td>2</td>
 						<td style="color: blue">PS4T064</td>
 						<td><a href="#">Toukiden 2</a></td>
@@ -148,12 +170,14 @@
 							<a href="editp.html"><img src="image/edit.png" style="width: 25%"/></a>  
 							<img src="image/remove.png" style="width: 25%"/>
 						</td>
-					</tr>
+					</tr> -->
 				</table>
 				<a href="#"><button name="nextbtn">NEXT PAGE</button></a>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php
+			require 'html/footer.html' 
+		?>
 	</div>
 </body>
 </html>

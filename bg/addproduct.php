@@ -88,9 +88,6 @@ input[type="submit"]:hover
 		<div class="main">
 
 			<div class="left">
-				<div class="reference" id="stat">
-					Overall Statistics
-				</div>
 				<div class="reference" id="history">
 					Order History
 				</div>
@@ -200,6 +197,8 @@ if(isset($_POST["addbtn"]))
 	$platform = $_POST["platform"];
 	$releasedate = $_POST["releasedate"];
 	$description = $_POST["description"];
+
+	$condition = 0;
 
 	$date = str_replace('-', '', $releasedate);
 	$num = rand(0,10000);
