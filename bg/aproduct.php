@@ -149,32 +149,6 @@
 				<?php
 					}
 				?>
-					<!-- <tr>
-						<td>2</td>
-						<td style="color: blue">PS4T064</td>
-						<td><a href="#">Toukiden 2</a></td>
-						<td><img src="image/deals5.jpg"/></td>
-						<td>PS4</td>
-						<td>179.00</td>
-						<td>21/03/2017</td>
-						<td>
-							<a href="editp.html"><img src="image/edit.png" style="width: 25%"/></a>  
-							<img src="image/remove.png" style="width: 25%"/>
-						</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td style="color: blue">PS4M044</td>
-						<td><a href="#">Warriors All-star</a></td>
-						<td><img src="image/new1.jpg"/></td>
-						<td>PS4</td>
-						<td>149.00</td>
-						<td>29/08/2017</td>
-						<td>
-							<a href="editp.html"><img src="image/edit.png" style="width: 25%"/></a>  
-							<img src="image/remove.png" style="width: 25%"/>
-						</td>
-					</tr> -->
 				</table>
 				<a href="#"><button name="nextbtn">NEXT PAGE</button></a>
 			</div>

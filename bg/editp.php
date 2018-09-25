@@ -84,6 +84,7 @@ button:hover
 			$result = mysqli_query($conn, $sqlProduct);
 			$row = mysqli_fetch_assoc($result);
 			$platform = $row["platform_id"];
+			$category = $row["category_id"];
 		?>
 		<div class="main">
 			<div class="left">
@@ -107,11 +108,11 @@ button:hover
 						</tr>
 						<tr>
 							<td>Product Name</td>
-							<td><input type="text" name="namefrm" maxlength="100" size="50" value="<?php echo $row['product_name'] ?>"/></td>
+							<td><input type="text" name="name" maxlength="100" size="50" value="<?php echo $row['product_name'] ?>"/></td>
 						</tr>
 						<tr>
 							<td>Product Image</td>
-							<td><input type="file" name="imagefrm" accept=".jpg,.png"/></td>
+							<td><input type="file" name="image" accept=".jpg,.png"/></td>
 						</tr>
 						<tr>
 							<td>Product Price</td>
@@ -135,30 +136,50 @@ button:hover
 
 									while ($rowPlatform = mysqli_fetch_assoc($resultPlatfrom)) 
 									{
-										// if ($rowPlatform["platform_id"] == $platform) 
-										// {
-										// 	echo "<option value=".$rowPlatform['platform_id']." selected >".$rowPlatform["platform_code"]."</option>";
-										// }
-										// else
-										// {
-										// 	echo "<option value=".$rowPlatform['platform_id']." >".$rowPlatform["platform_code"]."</option>";
-										// }
-										echo 123;										
+								
+								?>
+										<option
+											<?php echo "value= \"".$rowPlatform["platform_id"]."\" ";
+												if($rowPlatform["platform_id"] == $platform)
+												{
+													echo "selected";
+												}
+
+											?>
+												> <!-- close > for option above-->
+												<?php echo $rowPlatform["platform_code"]; ?>
+										</option>
+								<?php										
 									}
-								 ?>
+								?>
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td>Product Category</td>
 							<td>
-								<input type="checkbox" name="cat" value="1"/>FPS
-								<input type="checkbox" name="cat" value="2"/>Role-Playing
-								<input type="checkbox" name="cat" value="3"/>Action
-								<input type="checkbox" name="cat" value="4"/>Strategy
-								<input type="checkbox" name="cat" value="5"/>Stimulation
-								<input type="checkbox" name="cat" value="6" checked />Adventure
-								<input type="checkbox" name="cat" value="7"/>Sports & Racing
+								<?php
+									$sqlCat = 
+									"
+										SELECT c.*
+										FROM category c
+									";
+									$resultCat = mysqli_query($conn, $sqlCat);
+									while($rowCat = mysqli_fetch_assoc($resultCat))
+									{
+
+								?>
+										<input type="checkbox" name="cat" value="<?php $rowCat["category_id"]; ?>"
+								<?php
+										if($rowCat["category_id"] == $category)
+										{
+											echo "checked";
+										}
+								?> 
+										/> <?php echo $rowCat["category_name"]; ?>
+								<?php
+									}
+								?>
 							</td>
 						</tr>
 						<tr>
@@ -166,11 +187,19 @@ button:hover
 							<td><input type="date" name="proreleasedate" value="<?php echo $row['product_released_date'] ?>" /></td>
 						</tr>
 					</table>
-					<a href="aproduct.html"><button name="addbtn">SAVE EDIT</button></a>
+					<button name="updatebtn">Update</button>
 				</form>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html' 
+		?>
 	</div>
 </body>
 </html>
+<?php
+if(isset($_POST["updatebtn"]))
+{
+	$name = $_POST["name"];
+}
+?>
