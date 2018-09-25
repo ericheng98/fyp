@@ -61,6 +61,10 @@
 	<div class="mainwrapper">
 		<?php 
 			require 'html/header.html';
+			if (!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			}
 			require 'include/identity.php';
 		?>
 		<div class="main">

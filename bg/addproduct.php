@@ -79,9 +79,9 @@ input[type="submit"]:hover
 		<?php 
 			require 'html/header.html';
 			// echo $_SESSION["loggedin"];die;
-			if($_SESSION["loggedin"] != 1)
+			if (!isset($_SESSION["loggedin"]))
 			{
-				header("Location: http://localhost/fyp/bg/login.php");
+				header("Location: login.php");
 			}
 			require 'include/identity.php';
 		?>

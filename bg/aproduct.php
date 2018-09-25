@@ -86,6 +86,10 @@
 	<div class="mainwrapper">
 		<?php 
 			require 'html/header.html';
+			if (!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			}
 			require 'include/identity.php';
 			$sqlProduct =
 			"
@@ -137,7 +141,7 @@
 						<td class="align"><?php echo $row["product_price"]?></td>
 						<td class="align"><?php echo $row["product_released_date"]?></td>
 						<td class="align">
-							<a href="editp.php"><img src="image/edit.png" style="width: 25%"/></a>
+							<a href="editp.php?pid=<?php echo $row['product_id'] ?>"><img src="image/edit.png" style="width: 25%"/></a>
 							<br /> <br /> 
 							<img src="image/remove.png" style="width: 25%"/>
 						</td>
