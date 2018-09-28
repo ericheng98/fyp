@@ -1,6 +1,14 @@
-$(document).ready(function()
+$(document).on('click', '#play', function()
 {
-	$("#username").html("Guest ");
-	$("#inout").html("Login");
-	$("#inout").attr("href","login.php");
-})
+	window.location.replace("playstation.php");
+});
+
+$(document).on('click', '#xbox', function()
+{
+	window.location.replace("xbox.php");
+});
+
+$(document).on('click', '#pc', function()
+{
+	window.location.replace("pc.php");
+});

@@ -61,6 +61,17 @@ button:hover
 	filter:brightness(80%);
 	cursor: pointer;
 }
+#alert-side
+{
+	border: 1px solid red;
+	margin-top: 5px; 
+	padding: 5px; 
+	width: 500px;
+	background-color: pink;
+	color: #E52752;
+	font-weight: bold;
+	font-size: 1.3em;
+}
 </style>
 </head>
 <body>
@@ -99,16 +110,19 @@ button:hover
 				</div>
 			</div>
 			<div class="right">
+				<div id="alert-side" style="display:none;">
+					<p id="msg"></p>
+				</div>
 				<h1>Edit Product</h1>
 				<form method="POST" name="editForm" enctype="multipart/form-data">
 					<table>
 						<tr>
-							<td>Product ID</td>
-							<td><input type="text" name="idfrm" maxlength="7" value="<?php echo $row['product_code'] ?>" readonly /></td>
+							<td>Product Code</td>
+							<td><input type="text" name="code" maxlength="7" value="<?php echo $row['product_code'] ?>" readonly /></td>
 						</tr>
 						<tr>
 							<td>Product Name</td>
-							<td><input type="text" name="name" maxlength="100" size="50" value="<?php echo $row['product_name'] ?>"/></td>
+							<td><input type="text" name="namefrm" maxlength="100" size="50" value="<?php echo $row['product_name'] ?>"/></td>
 						</tr>
 						<tr>
 							<td>Product Image</td>
@@ -116,7 +130,7 @@ button:hover
 						</tr>
 						<tr>
 							<td>Product Price</td>
-							<td>RM <input type="text" maxlength="6" value="<?php echo $row['product_price'] ?>"/></td>
+							<td>RM <input type="text" maxlength="6" name="price" value="<?php echo $row['product_price'] ?>"/></td>
 						</tr>
 						<tr>
 							<td>Product Stock</td>
@@ -169,7 +183,7 @@ button:hover
 									{
 
 								?>
-										<input type="checkbox" name="cat" value="<?php $rowCat["category_id"]; ?>"
+										<input type="radio" name="category" value="<?php echo $rowCat['category_id']; ?>"
 								<?php
 										if($rowCat["category_id"] == $category)
 										{
@@ -184,7 +198,11 @@ button:hover
 						</tr>
 						<tr>
 							<td>Product Release Date</td>
-							<td><input type="date" name="proreleasedate" value="<?php echo $row['product_released_date'] ?>" /></td>
+							<td><input type="date" name="releasedate" value="<?php echo $row['product_released_date'] ?>" /></td>
+						</tr>
+						<tr>
+							<td>Product Description</td>
+							<td><textarea rows="10" cols="100" name="description"><?php echo $row["product_description"]; ?></textarea></td>
 						</tr>
 					</table>
 					<button name="updatebtn">Update</button>
@@ -200,6 +218,147 @@ button:hover
 <?php
 if(isset($_POST["updatebtn"]))
 {
-	$name = $_POST["name"];
+	$pname = $_POST["namefrm"];
+
+	$target = "images/".basename($_FILES['image']['name']);
+	$image = $_FILES['image']['name'];
+	$description = $_POST["description"];
+
+	if($image == "")
+	{
+		$image = $row["product_image"];
+	}
+	else
+	{
+		$image = $_FILES['image']['name'];
+	}
+
+	$price = $_POST["price"];
+	$stock = $_POST["stock"];
+	$newPlatform = $_POST["platform"];
+	$releasedate = $_POST["releasedate"];
+
+	if(!isset($_POST["category"]))
+	{
+		$category = "";
+	}
+	else
+	{
+		$category = $_POST["category"];
+	}
+
+	$condition = 0;
+	$code = "";
+
+
+	if ($newPlatform == $platform) 
+	{
+		$code = $_POST["code"];
+	}
+	else
+	{
+		$date = str_replace('-', '', $releasedate);
+		$num = rand(0,10000);
+		$code = $newPlatform."/".$date."/".$num;
+		// echo $row["platform_code"];die;
+		
+		$sqlcode =
+		"
+			SELECT product_code 
+			FROM product
+			WHERE product_code = '$code'
+		";
+		$result = mysqli_query($conn, $sqlcode);
+
+		if(mysqli_num_rows($result) != 0)
+		{
+			$code = $newPlatform."/".$date."/".rand(0,10000);
+		}
+	}
+
+	// echo $platform;die;
+	// echo $code;die;
+
+	$sql = 
+	"
+		UPDATE product 
+		SET
+		product_name = \"$pname\", product_image = '$image', product_price = $price, product_stock = $stock, product_code = '$code',
+		platform_id = $newPlatform, category_id = $category, product_released_date = '$releasedate',
+		product_description = \"$description\"
+		WHERE product_id = $pid
+	";
+
+	// echo "<pre>$sql</pre>";die;
+
+	if($pname == "")
+	{
+		$message = "Please key in Product Name!";
+		// echo 1;die;
+	}
+	else if($price == "")
+	{
+		$message = "Please enter a number for product price!";
+		// echo 2;die;
+	}
+	else if($stock == "")
+	{
+		$message = "Please enter price stock!";
+		// echo 3;die;
+	}
+	else if($newPlatform == "")
+	{
+		$message = "Please select your products platform!";
+		// echo 4;die;
+	}
+	else if($category == "")
+	{
+		$message = "Please select your product category!";
+		// echo 5;die;
+	}
+	else if($releasedate == "")
+	{
+		$message = "Please choose the release date of your product!";
+		// echo 6;die;
+	}
+	else
+	{
+		mysqli_query($conn, $sql);
+		if(move_uploaded_file($_FILES['image']['tmp_name'],$target))
+		{
+			$msg = "GOT";
+		}
+		else 
+		{
+			$msg = "NO";
+		}
+		$message = "Prodcuct has successfully Update!";
+		$condition = 1;
+		// echo 123;die;
+	}
+	?>
+		<script type="text/javascript">
+			var msg = "<?php echo $message; ?>";
+			var a = "<?php echo $condition ?>";
+			if(a == "1")
+			{
+				$("#alert-side").css("display", "");
+				$("#alert-side").css("background-color", "#8BFC81");
+				$("#alert-side").css("color", "green");
+				$('#alert-side').css("border", "1px solid green");
+				$("#msg").html(msg);
+				$("#alert-side").show().delay(2000).fadeOut();
+			}
+			else
+			{
+				$("#alert-side").css("display", "");
+				$("#msg").html(msg);
+				$("#alert-side").show().delay(2000).fadeOut();
+			}
+			// window.location.reload();
+			// window.location.replace("aproduct.php");
+			setTimeout("window.location.replace('aproduct.php')",1000)
+		</script>
+	<?php
 }
 ?>

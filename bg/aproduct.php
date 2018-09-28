@@ -69,16 +69,18 @@
 	filter:brightness(80%);
 	cursor: pointer;
 }
-
 .ProductImg
 {
 	width: 40%;
 	margin-left: 30%;
 }
-
 .align
 {
 	text-align: center;
+}
+.editDelete 
+{
+	border-radius: 7px;
 }
 </style>
 </head>
@@ -119,7 +121,7 @@
 				<table>
 					<tr class="topic">
 						<th style="width: 3%">#</th>
-						<th style="width: 8%">Product ID</th>
+						<th style="width: 8%">Product Code</th>
 						<th style="width: 19%">Product Name</th>
 						<th style="width: 25%">Product Image</th>
 						<th style="width: 8%">Platform</th>
@@ -141,9 +143,18 @@
 						<td class="align"><?php echo $row["product_price"]?></td>
 						<td class="align"><?php echo $row["product_released_date"]?></td>
 						<td class="align">
-							<a href="editp.php?pid=<?php echo $row['product_id'] ?>"><img src="image/edit.png" style="width: 25%"/></a>
-							<br /> <br /> 
-							<img src="image/remove.png" style="width: 25%"/>
+						    <a href="editp.php?pid=<?php echo $row['product_id'] ?>" > 
+								<button class="editDelete" style="background-color: #205FED; border: 1px solid #205FED;">
+	         						Edit
+	       						</button>
+							</a>
+							<a href="aproduct.php?pid=<?php echo $row['product_id'] ?>" > 
+								<button name="delete" class="editDelete" onclick="return confirmation();" id="delete" 
+										style="background-color: #F65959; border: 1px solid #F65959;">
+	         						Remove
+	       						</button>
+							</a>
+							
 						</td>
 					</tr>
 				<?php
@@ -154,8 +165,35 @@
 			</div>
 		</div>
 		<?php
-			require 'html/footer.html' 
+			require 'html/footer.html'; 
 		?>
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+	function confirmation()
+	{
+		answer = confirm("Confirm to delete this product?");
+		return answer;
+	}
+</script>
+<?php 
+	if (isset($_REQUEST["pid"])) 
+	{
+		$pid = $_REQUEST["pid"];
+		$sqlDelete = 
+		"
+			UPDATE product
+			SET product_isActive = 0
+			WHERE product_id = $pid
+		";
+		mysqli_query($conn, $sqlDelete);
+?>
+	<script type="text/javascript">
+		alert("Product Deleted!");
+		setTimeout("window.location='aproduct.php'",10);
+		// window.location('aproduct.php');
+	</script>
+<?php
+	}
+?>

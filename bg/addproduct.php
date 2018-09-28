@@ -135,7 +135,9 @@ input[type="submit"]:hover
 									while($rowPlatform = mysqli_fetch_assoc($resultPlatform))
 									{
 								?>
-										<option value="<?php echo $rowPlatform["platform_id"]; ?>"><?php echo $rowPlatform["platform_code"]; ?></option>
+										<option value="<?php echo $rowPlatform["platform_code"]; ?>">
+											<?php echo $rowPlatform["platform_code"]; ?>		
+										</option>
 								<?php
 									}
 								?>
@@ -203,7 +205,7 @@ if(isset($_POST["addbtn"]))
 	$date = str_replace('-', '', $releasedate);
 	$num = rand(0,10000);
 	$code = $platform."/".$date."/".$num;
-
+	// echo $code;die;
 	$sqlcode =
 	"
 		SELECT product_code 
