@@ -41,14 +41,25 @@ body
 	clear: both;
 	height: 50px;
 }
+.navigation ul
+{
+	height: 100%;
+	padding: 0px;
+}
 .navigation li
 {
 	display: inline-block;
-	padding: 0.78%;
+	/*padding: 20%;*/
+	/*vertical-align: baseline;*/
+	line-height: 50px;
 	/*margin-right: 10px;*/
-	width: 12%;
+	width: 20%;
 	text-align: center;
 	color: white;
+	height: 100%;
+	font-size: 1.4em;
+
+	/*border-right: 2px solid white;*/
 }
 .navigation li a
 {
@@ -65,9 +76,15 @@ body
 {
 	color: white;
 }
+#play
+{
+	/*border-left: 2px solid white;*/
+}
 .navigation li input[type=text]
 {
 	padding: 2px;
+	height: 50%;
+	width: 80%;
 }
 .footer
 {
