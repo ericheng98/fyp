@@ -19,6 +19,7 @@
 	padding-left:1%;
 	width:20%;
 	float:left;
+	font-size: 1.1em;
 }
 
 #platform ul li
@@ -131,10 +132,13 @@ iframe
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html'; 
+			require 'include/identity.php';	
+		?>
 		
 		<div class="main-content">
-			<div class="filtering">
+			<!-- <div class="filtering">
 				<h1>Filtering</h1>
 				<div id="platform">
 					<h3>Platform</h3>
@@ -156,12 +160,14 @@ iframe
 					<p><input type="checkbox" value="7" />Adventure</p>
 					<p><input type="checkbox" value="8" />Sport & Racing</p>
 				</div>
-			</div>
-			
+			</div> -->
+			<?php 
+				include 'include/filtering.php';
+			?>
 			<div class="productdetail">
 				<p style="margin-left:3%;">More information about product</p>
 				<div class="location">
-					<p><a href="index.html"/>Home </a>> <a href="product.html"/>Products </a>> <a href="playstation.html"/>PlayStation </a>> Accel World vs Sword Art Online: Millennium Twilight (PS4)</p>
+					<p><a href="index.php"/>Home </a>> <a href="product.php"/>Products </a>> <a href="playstation.html"/>PlayStation </a>> Accel World vs Sword Art Online: Millennium Twilight (PS4)</p>
 				</div>
 				<div class="img">
 					<p><img src="image/ps4productdetail1.jpg" /></p>

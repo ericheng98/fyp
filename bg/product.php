@@ -1,3 +1,6 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,33 +104,14 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
-		
+		<?php 
+			require 'html/header.html'; 
+			require 'include/identity.php';
+		?>
 		<div class="main-content">
-			<div class="filtering">
-				<h1>Filtering</h1>
-				<div id="platform">
-					<h3>Platform</h3>
-					<ul class="platform">
-						<li><a href="product.html"><b>All</b></a></li>
-						<li><a href="xbox.html">XBOX</a></li>
-						<li><a href="playstation.html">PlayStation</a></li>
-						<li><a href="pc.html">PC</a></li>
-					</ul>
-				</div>
-				<div id="category">
-					<h3>Category</h3>
-					<p><input type="checkbox" value="1" />FPS</p>
-					<p><input type="checkbox" value="2" />MMORPG</p>
-					<p><input type="checkbox" value="3" />Action</p>
-					<p><input type="checkbox" value="4" />Role-Playing</p>
-					<p><input type="checkbox" value="5" />Strategy</p>
-					<p><input type="checkbox" value="6" />Stimulation</p>
-					<p><input type="checkbox" value="7" />Adventure</p>
-					<p><input type="checkbox" value="8" />Sport & Racing</p>
-				</div>
-			</div>
-			
+			<?php 
+				require 'include/filtering.php'; 
+			?>			
 			<div class="product">
 				<div class="sort">
 					<select name="sortby">
@@ -142,7 +126,21 @@
 					</select>
 				</div>
 				<br /><br /><br /><br /><br />
-				<div class="img">
+				<?php
+					if(!isset($_REQUEST["platform"]) || $_REQUEST["platform"] == "all")
+					{
+						$whereStr = "";
+					}
+					else
+					{
+						// $display = $_REQUEST["platform"];
+						$whereStr = "AND plt.platform_code = '".$_REQUEST["platform"]."'";
+					}
+					
+					echo $whereStr;die;
+					// $sqlDisplay = 
+				?>
+				<!-- <div class="img">
 					<p><a href="ps4productdetail1.html"><img src="image/ps4game1.jpg"/></a></p>
 					<p>Accel World vs Sword Art Online(PS4)</p>
 					<p><del>RM169.00</del>&nbsp <ins>RM159.00</ins></p>
@@ -197,7 +195,7 @@
 					<p>The Witcher 3: Wild Hunt(PC)</p>
 					<p>RM181.90</p>
 					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		

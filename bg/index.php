@@ -11,7 +11,11 @@
 .slider img
 {
 	width: 100%;
-	margin: 30px 0px;
+	margin: 30px 0px 0px 0px;
+}
+.hot
+{
+	margin-bottom: 2%;
 }
 .hot a
 {
@@ -36,17 +40,18 @@
 }
 .new
 {
-	margin: 5% 0%;
+	margin: 5% 0% 1% 0%;
 }
 .new a
 {
 	text-decoration: none;
 }
-.product2
+.product2 
 {
 	display: inline-block;
-	margin: 0px 2.5%;
+	margin: 0px 0.5%;
 	text-align: center;
+	height: 30%;
 }
 .product2 button
 {
@@ -55,87 +60,101 @@
 	padding: 8px 10px;
 	border: 0px;
 }
+div.product2
+{
+	width: 12%;
+	height: 300px;
+	vertical-align: top;
+	border: 1px solid silver;
+	padding: 1% 3%;
+}
+div.product2:hover
+{
+	filter:brightness(80%);
+	cursor: pointer;
+}
 .product2 button:hover
 {
 	cursor: pointer;
+}
+.product2 img
+{
+	width: 100%;
+	height: 203.69px;
 }
 </style>
 </head>
 <body>
 	<div class="mainwrapper">
+		<form method="POST">
 		<?php 
 			require 'html/header.html';
-			// if (isset($_SESSION)) 
-			// {
-				require 'include/identity.php';
-			// }
-			// else
-			// {
-		
+			require 'include/identity.php';
 
-				
+			$sqlNew = 
+			"
+				SELECT p.*
+				FROM product p
+				WHERE p.product_isActive = 1
+				ORDER BY p.product_released_date DESC
+				LIMIT 5
+			";
+			$resultNew = mysqli_query($conn, $sqlNew);
+
+			$sqlHot =
+			"
+				SELECT p.*
+				FROM product p
+				WHERE p.product_isActive = 1
+				ORDER BY RAND()
+				LIMIT 5
+			";
+			$resultHot = mysqli_query($conn, $sqlHot);
+
 		?>
+		</form>
 		<div class="slider">
 			<a href="#"><img src="image/sale.jpg"/></a>
 		</div>
-		<div class="hot">
-			<a href="#"><h2>HOT DEALS !!!</h2></a><br>
-			<div class="product">
-				<img src="image/deals1.jpg"/><br>
-				<p>RM <del>159.00</del> <ins> 139.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product">
-				<img src="image/deal2.jpg"/>
-				<p>RM <del>179.00</del> <ins> 129.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product">
-				<img src="image/deals3.jpg"/>
-				<p>RM <del>169.00</del> <ins> 149.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product">
-				<img src="image/deals4.jpg"/>
-				<p>RM <del>149.00</del> <ins> 99.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product">
-				<img src="image/deals5.jpg"/>
-				<p>RM <del>179.00</del> <ins> 120.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
+		<div class="new">
+			<h2>NEWEST GAMES !!!</h2>
+			<?php
+			while($rowNew = mysqli_fetch_assoc($resultNew))
+			{
+			?>
+				<div class="product2">
+					<a href="productdetail.php?pid=<?php echo $rowNew["product_id"]; ?>">
+						<img src="images/<?php echo $rowNew["product_image"]; ?>" id="productImg" />
+					</a>
+					<p><?php echo $rowNew["product_name"]; ?></p>
+					<p>RM <?php echo $rowNew["product_price"]; ?></p>
+				</div>
+			<?php
+			}
+			?>
+			<br><br><br>
 			<hr>
 		</div>
-		<div class="new">
-			<a href="#"><h2>NEWEST GAMES !!!</h2></a><br>
-			<div class="product2">
-				<img src="image/new1.jpg"/><br>
-				<p>RM 219.00<p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product2">
-				<img src="image/new4.jpg"/>
-				<p>RM 159.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product2">
-				<img src="image/new5.jpg"/>
-				<p>RM 179.00<p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product2">
-				<img src="image/new2.jpg"/>
-				<p>RM <del>229.00</del> <ins> 99.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-			<div class="product2">
-				<img src="image/new3.jpg"/>
-				<p>RM <del>199.00</del> <ins> 99.00</ins><p>
-				<button name="addbtn">ADD TO CART</button>
-			</div>
-		</div>
-		<?php require 'html/footer.html' ?>
+		<div class="hot">
+			<h2>Recommended !!!</h2>
+			<?php
+			while($rowHot = mysqli_fetch_assoc($resultHot))
+			{
+			?>
+				<div class="product2">
+					<a href="productdetail.php?pid=<?php echo $rowHot["product_id"]; ?>">
+						<img src="images/<?php echo $rowHot["product_image"]; ?>" id="productImg" />
+					</a>
+					<p><?php echo $rowHot["product_name"]; ?></p>
+					<p>RM <?php echo $rowHot["product_price"]; ?></p>
+				</div>
+			<?php
+			}
+			?>
+		</div>	
+		<?php 
+			require 'html/footer.html' 
+		?>
 	</div>
 </body>
 </html>

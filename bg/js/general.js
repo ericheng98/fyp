@@ -1,14 +1,27 @@
 $(document).on('click', '#play', function()
 {
-	window.location.replace("playstation.php");
+	window.location.replace("product.php?platform=PS4");
 });
 
 $(document).on('click', '#xbox', function()
 {
-	window.location.replace("xbox.php");
+	window.location.replace("product.php?platform=XBOX");
 });
 
 $(document).on('click', '#pc', function()
 {
-	window.location.replace("pc.php");
+	window.location.replace("product.php?platform=PC");
+});
+
+$(document).on('click', '#pc', function()
+{
+	window.location.replace("product.php?platform=all");
+});
+
+$(document).bind("keydown", function(event)
+{
+  if(event.which=="13")
+   {
+      $("#but").click();
+    }
 });
