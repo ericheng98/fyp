@@ -72,6 +72,7 @@ div.product2:hover
 {
 	filter:brightness(80%);
 	cursor: pointer;
+	color: blue;
 }
 .product2 button:hover
 {

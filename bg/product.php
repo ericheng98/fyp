@@ -50,24 +50,28 @@
 .product div
 {
 	display:inline-block;
-	margin-left:6%;
+	margin-left:4.5%;
 	width:27%;
+	margin-bottom: 4.5%;
 }
 
-.img
+div.img
 {
 	text-align:center;
+	vertical-align: top;
+	border: 1px solid silver;
+}
+div.img:hover
+{
+	filter:brightness(80%);
+	cursor: pointer;
+	color: blue;
 }
 
 .img img
 {
 	width:150px;
 	height:200px;
-}
-
-.img img:hover
-{
-	filter:opacity(80%);
 }
 
 .img button
@@ -137,8 +141,38 @@
 						$whereStr = "AND plt.platform_code = '".$_REQUEST["platform"]."'";
 					}
 					
-					echo $whereStr;die;
-					// $sqlDisplay = 
+					// echo $whereStr;die;
+					$sqlDisplay =
+					"
+						SELECT p.*, plt.*
+						FROM product p
+						LEFT JOIN platform plt ON p.platform_id = plt.platform_id
+						WHERE p.product_isActive = 1
+						$whereStr
+						ORDER BY p.product_name ASC
+					"; 
+					// echo "<pre>$sqlDisplay</pre>";die;
+					$resultDisplay = mysqli_query($conn, $sqlDisplay);
+					if(mysqli_num_rows($resultDisplay) == 0)
+					{
+				?>
+						<h1>Sorry no product found</h1>
+				<?php
+					}
+					while($rowDisplay = mysqli_fetch_assoc($resultDisplay))
+					{
+				?>
+						<div class="img">
+							<p>
+								<a href="productdetail.php?pid=<?php echo $rowDisplay["product_id"]; ?>">
+									<img src="images/<?php echo $rowDisplay["product_image"]; ?>"/>
+								</a>
+							</p>
+							<p><?php echo $rowDisplay["product_name"]; ?></p>
+							<p>RM <?php echo $rowDisplay["product_price"]; ?></p>
+						</div>
+				<?php
+					}
 				?>
 				<!-- <div class="img">
 					<p><a href="ps4productdetail1.html"><img src="image/ps4game1.jpg"/></a></p>

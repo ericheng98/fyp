@@ -13,10 +13,10 @@ $(document).on('click', '#pc', function()
 	window.location.replace("product.php?platform=PC");
 });
 
-$(document).on('click', '#pc', function()
-{
-	window.location.replace("product.php?platform=all");
-});
+// $(document).on('click', '#pc', function()
+// {
+// 	window.location.replace("product.php?platform=all");
+// });
 
 $(document).bind("keydown", function(event)
 {

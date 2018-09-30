@@ -1,3 +1,6 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,7 +69,14 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html';
+			if(!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			} 
+			require 'include/identity.php';
+		?>
 		
 		<div class="container">
 		<table id="cart" class="table" >
@@ -77,13 +87,23 @@
 				<th style="width:22%" class="text-center">Subtotal</th>
 				<th style="width:10%"></th>
 			</tr>
+			<?php
+				if(!empty($_SESSION["shopping_cart"]))
+				{
+					$total = 0;
+					foreach ($_SESSION["shopping_cart"] as $key => $value) 
+					{
+						
+			?>
 			<tr>
 				<td>
 					<div id="imgd" style="text-align: center; margin-top:3%;">
-						<a href="#"><img src="image/ps4game1.jpg" /></a>
+						<a href="productdetail.php?pid=<?php echo $value["product_id"] ?>">
+							<img src="images/<?php echo $value["product_image"]; ?>" />
+						</a>
 					</div>
 					<div id="describe" style="text-align: left;">
-						<h3 style="text-align: center;">Accel World vs Sword Art Online: Millennium Twilight (PS4)</h3>
+						<h3 style="text-align: center;"><?php echo $value['product_name']; ?></h3>
 						<p style="margin-left:3%;">
 							SKU: PS4A026
 							<br />Weight: 200 grams
@@ -103,7 +123,11 @@
 				<td>RM 318.00</td></span>
 				<td><img src="image/remove.png" style="width: 50px;height: 50px;"/></td>
 			</tr>
-			<tr>
+			<?php
+					}
+				}
+			?>
+			<!-- <tr>
 				<td>
 					<div id="imgd" style="text-align: center; margin-top:3%;">
 						<a href="#"><img src="image/ps4game3.jpg" /></a>
@@ -128,7 +152,7 @@
 				<td>1</td>
 				<td>RM 189.00</td></span>
 				<td><img src="image/remove.png" style="width: 50px;height: 50px;"/></td>
-			</tr>
+			</tr> -->
 			<tr>
 				<td><a href="index.html"><input type="button" id="csbtn" value="< Continue Shopping"/></a><td>
 				<td></td>

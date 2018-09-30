@@ -1,3 +1,6 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +13,7 @@
 	overflow:auto;
 	margin-top:5%;
 	margin-bottom:5%;
-}	
-	
+}
 	
 .filtering
 {
@@ -138,6 +140,7 @@ iframe
 		?>
 		
 		<div class="main-content">
+			<form name="add" method="POST">
 			<!-- <div class="filtering">
 				<h1>Filtering</h1>
 				<div id="platform">
@@ -163,65 +166,134 @@ iframe
 			</div> -->
 			<?php 
 				include 'include/filtering.php';
+				$productID = $_REQUEST["pid"];
+				$sqlProduct = 
+				"
+					SELECT p.*, c.*, plt.*
+					FROM product p
+					LEFT JOIN category c ON p.category_id = c.category_id
+					LEFT JOIN platform plt ON p.platform_id = plt.platform_id
+					WHERE p.product_isActive = 1
+					AND p.product_id = $productID
+				";
+
+				$resultPro = mysqli_query($conn, $sqlProduct);
+				while($rowProduct = mysqli_fetch_assoc($resultPro))
+				{
 			?>
 			<div class="productdetail">
-				<p style="margin-left:3%;">More information about product</p>
 				<div class="location">
-					<p><a href="index.php"/>Home </a>> <a href="product.php"/>Products </a>> <a href="playstation.html"/>PlayStation </a>> Accel World vs Sword Art Online: Millennium Twilight (PS4)</p>
+					<p>
+						<a href="index.php"/>Home </a>> 
+						<a href="product.php"/>Products </a>> 
+						<?php echo $rowProduct["product_name"]; ?>
+					</p>
 				</div>
 				<div class="img">
-					<p><img src="image/ps4productdetail1.jpg" /></p>
+					<p><img src="images/<?php echo $rowProduct["product_image"]; ?>" /></p>
 				</div>
 				<div class="details">
-					<h3>Accel World vs Sword Art Online: Millennium Twilight (PS4)</h3>
-					<p>Price: <del>RM169.00</del>&nbsp <ins>RM159.00</ins></p>
-					<p><b>ITEM DETAILS</b>
-						<br/>SKU: PS4A026
-						<br/>Weight: 200 grams
-						<br/>Stock: Stock available
+					<h1><?php echo $rowProduct["product_name"]; ?></h1>
+					
+					<p>
+						<h2>PRODUCT DETAILS</h2>
+						<p>Price: RM <?php echo $rowProduct["product_price"]; ?></p>
+						<p>Product Code: <?php echo $rowProduct["product_code"]; ?></p>
+						
+						<p>Platform: <?php echo $rowProduct["platform_code"]; ?></p>
+						<p>Category: <?php echo $rowProduct["category_name"]; ?></p>
+						<p>Release Date: <?php echo $rowProduct["product_released_date"]; ?></p>
+						<h3>
+							<?php
+							if($rowProduct["product_stock"] > 0)
+							{
+								echo "Stock Available !!!";
+								$stock = 1;
+							}
+							else
+							{
+								echo "Currently out of Stock !!!";
+								$stock = 0;
+							}
+							?>
+						</h3>
 					</p>
-					<p>Brand: Bandai Namco Games
-						<br/>Platform: PlayStation Vita
-						<br/>Publisher: Bandai Namco Games
-						<br/>Genre: Action
-						<br/>Region: Region 3
-						<br/>Language: Japanese Voice, English Subtitle
-						<br/>Release Date: 7/7/2017
+					<p>
+							<button name="addbtn">ADD TO CART</button>
 					</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
 				</div>
 				
 				<div class="description">
-					<h3>Description</h3>
-					<p>
-						Virtual and accelerated worlds collide in this action-packed crossover of the hit anime/light-novel series 
-						Accel World and Sword Art Online! Svart Alfheim and the Accelerated World have begun to merge. In the midst of the 
-						chaos, Yui has gone missing. Kirito must challenge the Seven Kings of pure color from the Accelerated World to gain 
-						access to her location. Players from both groups come together in a war of the worlds where the strongest Burst 
-						Linkers and ALO Players are on a mission to save Yui from the hands of Personna Babel.
+					<h2>Description</h2>
+					<p style="white-space: pre-line">
+						<?php
+							$description = $rowProduct["product_description"];
+							echo $description;
+						?>
 					</p>
-					<p>
-						Accel World VS. Sword Art Online combines the best of both series, with a storyline supervised by Reki Kawahara 
-						himself -- the creator behind both of these award-winning animes and master of the technological fantasy genre. 
-						Play with Kirito, Asuna, Yuuki, Leafa, or any number of classic SAO characters in a setting where the Accelerated 
-						and Virtual worlds intersect. Challenge Black Lotus, Silver Crow, Scarlet Rain, and the rest of the Seven Kings of 
-						Pure Color from the Accelerated World, and amass clues as to where to find your friend. Mix and match characters 
-						from both Accel World and Swords Art Online, and switch between them in real-time adrenaline-filled battles.Offset 
-						over 30 playable characters’ strengths and weaknesses to create the perfect team and deliver your beloved Yui from 
-						the evil grasp of Personna Babel! The main story offers 30 hours of intense gameplay in Single-Player mode, making 
-						for a well-rounded solo adventure. But Accel World VS. Sword Art Online doesn’t stop there! Thanks to its Online 
-						Player-Versus-Player mode, unlock new special moves, or check out also its extensive Adventure mode where you can: 
-						play co-op or compete in teams to overcome these other-worldly obstacles together.
-					</p>
-					
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/EWYNQij0opc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 				</div>
 			</div>
+			<?php
+				}
+			?>
+			</form>
 		</div>
-			
-		
-		
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html'; 
+		?>
 	</div>
 </body>
 </html>
+<?php
+if(isset($_POST["addbtn"]))
+{
+	if(!isset($_SESSION["loggedin"]))
+	{
+?>
+<script type="text/javascript">
+	window.location.replace("login.php");
+</script>
+<?php
+	}
+	if(isset($_SESSION["shopping_cart"]))
+	{
+		$item_array_id = array_column($_SESSION["shopping_cart"], "product_id");
+		$count = count($_SESSION["shopping_cart"]);
+		$item_array = 
+		array(
+			'product_id' => $_REQUEST["pid"],
+			'product_code' => $rowProduct["product_code"], 
+			'product_price' => $rowProduct["product_price"],
+			'product_image' => $rowProduct["product_image"],
+			'product_name' => $rowProduct["product_price"],
+			'platform' => $rowProduct["platform_code"],
+			'category' => $rowProduct["category_name"]
+		);
+		$_SESSION["shopping_cart"][$count] = $item_array;
+		$added = 1;
+		$msg = "Success added to cart!";
+	}
+	else
+	{
+		$item_array = 
+		array(
+			'product_id' => $_REQUEST["pid"],
+			'product_code' => $rowProduct["product_code"], 
+			'product_price' => $rowProduct["product_price"],
+			'product_image' => $rowProduct["product_image"],
+			'product_name' => $rowProduct["product_name"],
+			'platform' => $rowProduct["platform_code"],
+			'category' => $rowProduct["category_name"]
+		);
+		$_SESSION["shopping_cart"][0] = $item_array;
+		$added = 0;
+	}
+}
+?>
+<script type="text/javascript">
+	var added = <?php echo $added; ?>;
+	if(added == 1)
+	{
+		alert("<?php echo $msg; ?>");
+	}
+</script>

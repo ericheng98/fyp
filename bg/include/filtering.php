@@ -6,7 +6,7 @@
 	<div id="platform">
 		<h3>Platform</h3>
 		<ul class="platform">
-			<li><a href="product.php?platfrom=all"><b>All</b></a></li>
+			<li><a href="product.php?platform=all"><b>All</b></a></li>
 			<li><a href="product.php?platform=PS4"><b>PlayStation</b></a></li>
 			<li><a href="product.php?platform=PC"><b>PC</b></a></li>
 			<li><a href="product.php?platform=XBOX"><b>XBOX</b></a></li>
