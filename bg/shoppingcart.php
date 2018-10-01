@@ -1,5 +1,20 @@
 <?php
 	include 'connection.php';
+	if(isset($_GET["action"]))
+{
+	if($_GET["action"] == "delete")
+	{
+		foreach($_SESSION["shopping_cart"] as $keys => $values)
+		{
+			if($values["product_id"] == $_GET["pid"])
+			{
+				unset($_SESSION["shopping_cart"][$keys]);
+				echo'<script>alert("Item Removed")</script>';
+				echo'<script>window.location="shoppingcart.php"</script>';
+			}
+		}
+	}
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -34,7 +49,7 @@
 }
 
 .table th
-{font-size: 1.6em;
+{font-size: 1.3em;
  font-weight:: bold;
 }
 .table input[type="button"]
@@ -65,6 +80,17 @@
 {background-color: #489648;
  cursor: pointer;
 }
+#button
+{
+	margin-top: 2%;
+	text-align: center;
+}
+#button input[type="button"]
+{
+	/*margin-left: 2%;*/
+	height: 50px;
+	padding: 1%;
+}
 </style>
 </head>
 <body>
@@ -76,94 +102,117 @@
 				header("Location: login.php");
 			} 
 			require 'include/identity.php';
+			$total = 0;
+			// $p = 0;
 		?>
 		
-		<div class="container">
+		<div class="container" style="width: 100%;">
 		<table id="cart" class="table" >
-			<tr>
-				<th style="width:50%">Product</th>
-				<th style="width:10%">Price</th>
+			<tr >
+				<th style="width:55%">Product</th>
+				<th style="width:15%">Price(RM)</th>
 				<th style="width:8%">Quantity</th>
-				<th style="width:22%" class="text-center">Subtotal</th>
-				<th style="width:10%"></th>
+				<th style="width:22%" class="text-center">Subtotal(RM)</th>
+				<th style="width:12%"></th>
 			</tr>
 			<?php
 				if(!empty($_SESSION["shopping_cart"]))
 				{
-					$total = 0;
+					$quantity = 1;
 					foreach ($_SESSION["shopping_cart"] as $key => $value) 
 					{
 						
 			?>
-			<tr>
-				<td>
-					<div id="imgd" style="text-align: center; margin-top:3%;">
-						<a href="productdetail.php?pid=<?php echo $value["product_id"] ?>">
-							<img src="images/<?php echo $value["product_image"]; ?>" />
-						</a>
-					</div>
-					<div id="describe" style="text-align: left;">
-						<h3 style="text-align: center;"><?php echo $value['product_name']; ?></h3>
-						<p style="margin-left:3%;">
-							SKU: PS4A026
-							<br />Weight: 200 grams
-							<br />Brand: Bandai Namco Games
-							<br />Platform: PlayStation Vita
-							<br />Publisher: Bandai Namco Games
-							<br />Genre: Action
-							<br />Region: Region 3
-							<br />Language: Japanese Voice, English Subtitl
-							<br />Release Date: 7/7/2017
-						</p>
-					</div>
-				</td>
-				<span id="textcenter">
-				<td>RM 159.00</td>
-				<td>2</td>
-				<td>RM 318.00</td></span>
-				<td><img src="image/remove.png" style="width: 50px;height: 50px;"/></td>
-			</tr>
+						<tr>
+							<td>
+								<div>
+								<div id="imgd" style="text-align: left; margin:3%; float: left;">
+									<a href="productdetail.php?pid=<?php echo $value["product_id"] ?>">
+										<img src="images/<?php echo $value["product_image"]; ?>" />
+									</a>
+								</div>
+								<div id="describe" style="text-align: left; margin: 3%; float: left;">
+									<h3 style="text-align: left;"><?php echo $value['product_name']; ?></h3>
+									<p style="margin-left:3%;">
+										Product Code: <?php echo $value['product_code']; ?>
+										<br />Platform: <?php echo $value['platform']; ?>
+										<br />Category: <?php echo $value['category']; ?>
+										<br />Release Date: <?php echo $value['release_date']; ?>
+									</p>
+								</div>
+								</div>
+							</td>
+							<span id="textcenter">
+								<td><?php echo $value['product_price'] ?></td>
+								<td><?php echo $quantity;?></td>
+								<td> 
+									<?php 
+									$sub = $value['product_price'] * $quantity;
+									echo $sub;
+									?>
+								</td>
+							</span>
+							<td>
+								<a href="shoppingcart.php?action=delete&pid=<?php echo $value["product_id"]; ?>">
+									<img src="image/delete.png" style="width: 50px;height: 50px;"/>
+								</a>
+							</td>
+						</tr>
 			<?php
+						$total += $value['product_price'];
+						$p = 1;
 					}
 				}
+				else
+				{
+					$p = 0;
+				}
 			?>
-			<!-- <tr>
-				<td>
-					<div id="imgd" style="text-align: center; margin-top:3%;">
-						<a href="#"><img src="image/ps4game3.jpg" /></a>
-					</div>
-					<div id="describe" style="text-align: left;">
-						<h3 style="text-align: center;">Ark Survival Evolved (PS4)</h3>
-						<p style="margin-left:3%;">
-							SKU: PS4A031
-							<br />Weight: 200 grams
-							<br />Platform: PlayStation 4
-							<br />Publisher: Studio Wildcard
-							<br />Developer: Studio Wildcard
-							<br />Genre: Adventure
-							<br />Region: Region ALL
-							<br />Language: English
-							<br />Release Date: 29/8/2017
-						</p>
-					</div>
-				</td>
+
+			<tr style="height: 50px;">
+				<td style="border: none;"></td>
+				<td style="border: none;"></td>
+				<td>Total :</td>
 				<span id="textcenter">
-				<td>RM 189.00</td>
-				<td>1</td>
-				<td>RM 189.00</td></span>
-				<td><img src="image/remove.png" style="width: 50px;height: 50px;"/></td>
-			</tr> -->
-			<tr>
-				<td><a href="index.html"><input type="button" id="csbtn" value="< Continue Shopping"/></a><td>
-				<td></td>
-				<span id="textcenter">
-				<td>Total : RM 507.00</td></span>
-				<td><a href="payment.html"><input type="button" id="checkoutbtn" value="Check Out >"/></a></td>
+					<td>RM <?php echo $total; ?></td>
+				</span>
+				<td style="border: none;"></td>
 			</tr>
+			<!-- <tr style="border: none;">	
+				<a href="product.php"><input type="button" id="csbtn" value="< Continue Shopping"/>
+				<a href="payment.php"><input type="button" id="checkoutbtn" value="Check Out >"/></a>
+			</tr> -->
 		</table>
+		<div id="button">
+			<input type="button" id="csbtn" value="< Continue Shopping" />
+			<input type="button" id="checkoutbtn" value="Check Out >" />
+		</div>
 	</div>
-		
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html' 
+		?>
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+var got = <?php echo $p; ?>;
+
+if (got == 0)
+{
+	// $('.container').append('<img id="img" src="image/empty.jpg" style="width: 60%; margin: auto;" />');
+	$('<img id="img" src="image/empty.jpg" style="width: 50%; margin: 0% 25%;" />').insertBefore("#button");
+	$("table").css("display","none");
+	$("#checkoutbtn").css("display", "none");
+	$('#csbtn').attr('value', 'SHOP NOW');
+}
+
+$(document).on('click', '#csbtn', function()
+{
+	window.location.replace("product.php");
+});
+
+$(document).on('click', '#checkoutbtn', function()
+{
+	window.location.replace("index.php");
+});
+</script>

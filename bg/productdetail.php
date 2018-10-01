@@ -255,6 +255,19 @@ if(isset($_POST["addbtn"]))
 </script>
 <?php
 	}
+	$sql = 
+	"
+		SELECT p.*, c.*, plt.*
+		FROM product p
+		LEFT JOIN category c ON p.category_id = c.category_id
+		LEFT JOIN platform plt ON p.platform_id = plt.platform_id
+		WHERE p.product_isActive = 1
+		AND p.product_id = $productID
+	";
+
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);
+
 	if(isset($_SESSION["shopping_cart"]))
 	{
 		$item_array_id = array_column($_SESSION["shopping_cart"], "product_id");
@@ -262,12 +275,13 @@ if(isset($_POST["addbtn"]))
 		$item_array = 
 		array(
 			'product_id' => $_REQUEST["pid"],
-			'product_code' => $rowProduct["product_code"], 
-			'product_price' => $rowProduct["product_price"],
-			'product_image' => $rowProduct["product_image"],
-			'product_name' => $rowProduct["product_price"],
-			'platform' => $rowProduct["platform_code"],
-			'category' => $rowProduct["category_name"]
+			'product_code' => $row["product_code"], 
+			'product_price' => $row["product_price"],
+			'product_image' => $row["product_image"],
+			'product_name' => $row["product_name"],
+			'platform' => $row["platform_code"],
+			'category' => $row["category_name"],
+			'release_date' => $row["product_released_date"]
 		);
 		$_SESSION["shopping_cart"][$count] = $item_array;
 		$added = 1;
@@ -278,22 +292,21 @@ if(isset($_POST["addbtn"]))
 		$item_array = 
 		array(
 			'product_id' => $_REQUEST["pid"],
-			'product_code' => $rowProduct["product_code"], 
-			'product_price' => $rowProduct["product_price"],
-			'product_image' => $rowProduct["product_image"],
-			'product_name' => $rowProduct["product_name"],
-			'platform' => $rowProduct["platform_code"],
-			'category' => $rowProduct["category_name"]
+			'product_code' => $row["product_code"], 
+			'product_price' => $row["product_price"],
+			'product_image' => $row["product_image"],
+			'product_name' => $row["product_name"],
+			'platform' => $row["platform_code"],
+			'category' => $row["category_name"],
+			'release_date' => $row["product_released_date"]
 		);
 		$_SESSION["shopping_cart"][0] = $item_array;
+		$msg = "Success added to cart!";
 		$added = 0;
 	}
 }
 ?>
 <script type="text/javascript">
 	var added = <?php echo $added; ?>;
-	if(added == 1)
-	{
-		alert("<?php echo $msg; ?>");
-	}
+	alert("<?php echo $msg; ?>");
 </script>
