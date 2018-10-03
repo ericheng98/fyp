@@ -1,20 +1,20 @@
 <?php
 	include 'connection.php';
 	if(isset($_GET["action"]))
-{
-	if($_GET["action"] == "delete")
 	{
-		foreach($_SESSION["shopping_cart"] as $keys => $values)
+		if($_GET["action"] == "delete")
 		{
-			if($values["product_id"] == $_GET["pid"])
+			foreach($_SESSION["shopping_cart"] as $keys => $values)
 			{
-				unset($_SESSION["shopping_cart"][$keys]);
-				echo'<script>alert("Item Removed")</script>';
-				echo'<script>window.location="shoppingcart.php"</script>';
+				if($values["product_id"] == $_GET["pid"])
+				{
+					unset($_SESSION["shopping_cart"][$keys]);
+					echo'<script>alert("Item Removed")</script>';
+					echo'<script>window.location="shoppingcart.php"</script>';
+				}
 			}
 		}
 	}
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,15 +42,17 @@
 .table
 {
 	border-collapse : collapse;
-	 border-spacing: 0px;
+	border-spacing: 0px;
 }
 .table th,td
-{border: 1px solid grey;
+{border: 2px solid silver;
 }
 
 .table th
 {font-size: 1.3em;
- font-weight:: bold;
+ /*font-weight: bold;*/
+ text-align: center;
+ background-color: silver;
 }
 .table input[type="button"]
 {width: 280px;
@@ -131,7 +133,7 @@
 										<img src="images/<?php echo $value["product_image"]; ?>" />
 									</a>
 								</div>
-								<div id="describe" style="text-align: left; margin: 3%; float: left;">
+								<div id="describe" style="text-align: left; margin: 3%; float: left; width: 60%">
 									<h3 style="text-align: left;"><?php echo $value['product_name']; ?></h3>
 									<p style="margin-left:3%;">
 										Product Code: <?php echo $value['product_code']; ?>
@@ -178,10 +180,6 @@
 				</span>
 				<td style="border: none;"></td>
 			</tr>
-			<!-- <tr style="border: none;">	
-				<a href="product.php"><input type="button" id="csbtn" value="< Continue Shopping"/>
-				<a href="payment.php"><input type="button" id="checkoutbtn" value="Check Out >"/></a>
-			</tr> -->
 		</table>
 		<div id="button">
 			<input type="button" id="csbtn" value="< Continue Shopping" />
@@ -213,6 +211,6 @@ $(document).on('click', '#csbtn', function()
 
 $(document).on('click', '#checkoutbtn', function()
 {
-	window.location.replace("index.php");
+	window.location.replace("checkout.php");
 });
 </script>

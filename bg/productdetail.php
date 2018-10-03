@@ -141,32 +141,10 @@ iframe
 		
 		<div class="main-content">
 			<form name="add" method="POST">
-			<!-- <div class="filtering">
-				<h1>Filtering</h1>
-				<div id="platform">
-					<h3>Platform</h3>
-					<ul class="platform">
-						<li><a href="product.html"><b>All</b></a></li>
-						<li><a href="xbox.html">XBOX</a></li>
-						<li><a href="playstation.html">PlayStation</a></li>
-						<li><a href="pc.html">PC</a></li>
-					</ul>
-				</div>
-				<div id="category">
-					<h3>Category</h3>
-					<p><input type="checkbox" value="1" />FPS</p>
-					<p><input type="checkbox" value="2" />MMORPG</p>
-					<p><input type="checkbox" value="3" />Action</p>
-					<p><input type="checkbox" value="4" />Role-Playing</p>
-					<p><input type="checkbox" value="5" />Strategy</p>
-					<p><input type="checkbox" value="6" />Stimulation</p>
-					<p><input type="checkbox" value="7" />Adventure</p>
-					<p><input type="checkbox" value="8" />Sport & Racing</p>
-				</div>
-			</div> -->
 			<?php 
 				include 'include/filtering.php';
 				$productID = $_REQUEST["pid"];
+				$stock = 1;
 				$sqlProduct = 
 				"
 					SELECT p.*, c.*, plt.*
@@ -208,7 +186,6 @@ iframe
 							if($rowProduct["product_stock"] > 0)
 							{
 								echo "Stock Available !!!";
-								$stock = 1;
 							}
 							else
 							{
@@ -219,7 +196,8 @@ iframe
 						</h3>
 					</p>
 					<p>
-							<button name="addbtn">ADD TO CART</button>
+						<button name="addbtn" id="addbtn">ADD TO CART</button>
+						<!-- <input type="button" name="addbtn" id="addbtn" value="ADD TO CART" /> -->
 					</p>
 				</div>
 				
@@ -304,9 +282,22 @@ if(isset($_POST["addbtn"]))
 		$msg = "Success added to cart!";
 		$added = 0;
 	}
+?>
+	<script type="text/javascript">
+		alert("<?php echo $msg; ?>");
+	</script>
+<?php
 }
 ?>
+
 <script type="text/javascript">
-	var added = <?php echo $added; ?>;
-	alert("<?php echo $msg; ?>");
+	var stock = <?php echo $stock; ?>;
+	$(document).ready()
+	{
+		if(stock == 0)
+		{
+			$('button').attr("disabled","disabled");
+			$('#addbtn').css("cursor","not-allowed");
+		}
+	}
 </script>

@@ -1,3 +1,6 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,14 +84,20 @@ table td p
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
-		
+		<?php 
+			require 'html/header.html';
+			if(!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			}
+			require 'include/identity.php';  
+		?>
 		<div class="main-content">
-		
+		<form method="POST" name="paymentfrm">
 			<div class="paymenttype">
 				<table>
 					<tr>
-						<div class="title"><p>Choose Payment Option</p></div>
+						<div class="title"><p>Enter Payment Details</p></div>
 					</tr>
 					<tr>
 						<td>
@@ -97,24 +106,9 @@ table td p
 							<p><input type="radio" name="paymentmethod"/></p>
 						</td>
 						<td>
-							<p>Online Banking (FPX)</p>
-							<p><img src="image/fpx.png" /></p>
-							<p><input type="radio" name="paymentmethod"/></p>
-						</td>
-						<td>
-							<p>Cash at 7-Eleven</p>
-							<p><img src="image/7-11.png" /></p>
-							<p><input type="radio" name="paymentmethod"/></p>
-						</td>
-						<td>
-							<p>Cash on Delivery</p>
-							<p><img src="image/cash.png" /></p>
-							<p><input type="radio" name="paymentmethod"/></p>
-						</td>
-						<td>
-							<p>Maybank Installments</p>
-							<p><img src="image/maybank.png" /></p>
-							<p><input type="radio" name="paymentmethod"/></p>
+							<!-- <p>Online Banking (FPX)</p> -->
+							<p><img src="image/acept.jpg" style="width: 80%" /></p>
+							<!-- <p><input type="radio" name="paymentmethod"/></p> -->
 						</td>
 					</tr>
 				</table>
@@ -123,7 +117,7 @@ table td p
 			<div class="details">
 				<div class="cardnumber">
 					<p>Card Number</p>
-					<p><input type="text" name="cardnumber" pattern="[0-9]{12}" required /></p>
+					<p><input type="text" name="cardnumber" pattern="[0-9]{13, 16}" required /></p>
 				</div>
 				<div class="cardname">
 					<p>Name on Card</p>
@@ -131,23 +125,80 @@ table td p
 				</div>
 				<div class="cardexpiry">
 					<p>Expiry Date</p>
-					<p><input type="text" name="cardmm" placeholder="mm" required /><input type="text" name="cardyy" placeholder="yy" required /></p>
+					<p>
+						<input type="text" name="cardmm" placeholder="mm" required />/&nbsp;  
+						<input type="text" name="cardyy" placeholder="yy" required />
+					</p>
 				</div>
 				<div class="ccv">
-					<p>CCV/CVV</p>
+					<p>CVC</p>
 					<p><input type="text" name="cardccv" pattern="[0-9]{3}" required /></p>
-				</div>
-				<div class="save">
-					<p><input type="checkbox" name="saveornot" value="yes"/> Do not save this card for future use</p>
 				</div>
 			</div>
 			
 			<div class="orderbtn">
-					<p><a href="thankyoupage.html"/><input id="orderbtn" type="button" name="orderbtn" value="Continue with transaction" /></a></p>
+				<p>
+					<input id="orderbtn" type="submit" name="order" value="Continue with transaction" />
+				</p>
 			</div>
+		</form>
 		</div>
 		
-		<?php require 'html/footer.html' ?>
+		<?php 
+			// echo $_SESSION["address"];die;
+			require 'html/footer.html' 
+		?>
 	</div>
 </body>
 </html>
+<?php
+if(isset($_POST["order"]))
+{
+	// echo 123;die;
+	$cardnumber = $_POST["cardnumber"];
+	$name = $_POST["cardname"];
+	$month = $_POST["cardmm"];
+	$year = $_POST["cardyy"];
+	$cvc = $_POST["cardccv"];
+	$total = $_SESSION["total"];
+	$delivery = $_SESSION["address"];
+	$date = date("Y-m-d");
+
+	if($cardnumber == "")
+	{
+		$msg = "Please fill in card number";
+	}
+	else if($name == "") 
+	{
+		$msg = "Please fill in name on card";
+	}
+	else if($month == "") 
+	{
+		$msg = "Please fill in month of expired date";
+	}
+	else if($year == "") 
+	{
+		$msg = "Please fill in year of expired date";
+	}
+	else if($cvc == "") 
+	{
+		$msg = "Please fill in your cvc";
+	}
+	else
+	{
+		$msg = "";
+	}
+
+	if(!empty($_SESSION["shopping_cart"]))
+	{
+		$sqlOrder = 
+		"
+			INSERT INTO 
+			order (order_total_price, order_status, order_date, order_deliveryAddress)
+			VALUES
+			($total, 0, '$date', \"$delivery\")
+		";
+		echo "<pre>$sqlOrder;</pre>";
+	}
+}
+?>
