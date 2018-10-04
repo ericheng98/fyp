@@ -1,6 +1,3 @@
-<?php
-	include 'connection.php';
-?>
 <div class="filtering">
 	<h1>Filtering</h1>
 	<div id="platform">

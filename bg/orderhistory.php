@@ -65,13 +65,19 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html'; 
+			if (!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			}
+			require 'include/identity.php';
+		?>
 		<div class="main">
 			<div class="left">
 				<ul>
-					<li><a href="account.html">My Account</a></li>
-					<li><a href="orderhistory.html">Order History</a></li>
-					<li><a href="#">Weekly Log</a></li>
+					<li><a href="account.php">My Account</a></li>
+					<li><a href="orderhistory.php">Order History</a></li>
 				<ul>
 			</div>
 			<div class="right">
@@ -111,7 +117,9 @@
 				</table>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html' 
+			?>
 	</div>
 </body>
 </html>
