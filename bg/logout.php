@@ -1,6 +1,6 @@
 <?php
 	include 'connection.php';
-	echo 123;
+	echo "Thank you for using BullsGaming!";
 	// echo $_SESSION["loggedin"];die;
 	session_destroy();
-	header( "refresh:2; url=index.php");
+	header( "refresh:1; url=index.php");
