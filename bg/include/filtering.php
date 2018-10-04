@@ -10,6 +10,7 @@
 		</ul>
 	</div>
 	<div id="category">
+		<form name="categoryfrm" method="POST">
 		<h3>Category</h3>
 		<?php
 			$sqlCategory = 
@@ -21,7 +22,7 @@
 			while($rowCat = mysqli_fetch_assoc($resultCat))
 			{
 		?>
-				<p><input type="checkbox" value="<?php echo $rowCat["category_code"] ?>" /><?php echo $rowCat["category_name"] ?></p>
+				<p><input type="radio" name="rad" value="<?php echo $rowCat["category_code"] ?>" /><?php echo $rowCat["category_name"] ?></p>
 		<?php
 			}
 		?>

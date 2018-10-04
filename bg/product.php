@@ -118,7 +118,7 @@ div.img:hover
 			?>			
 			<div class="product">
 				<div class="sort">
-					<select name="sortby">
+					<select name="sortby" id="sortby">
 						<option value="0">-------Sort By-------</option>
 						<option value="1">Price (low to high)</option>
 						<option value="2">Price (high to low)</option>
@@ -131,6 +131,7 @@ div.img:hover
 				</div>
 				<br /><br /><br /><br /><br />
 				<?php
+					$orderStr = "ORDER BY p.product_name ASC";
 					if(!isset($_REQUEST["platform"]) || $_REQUEST["platform"] == "all")
 					{
 						$whereStr = "";
@@ -140,6 +141,71 @@ div.img:hover
 						// $display = $_REQUEST["platform"];
 						$whereStr = "AND plt.platform_code = '".$_REQUEST["platform"]."'";
 					}
+					if(isset($_REQUEST["sortby"]))
+					{
+						$sb = $_REQUEST["sortby"];
+						switch ($sb)
+						{
+							case 1:
+								$orderStr = " ORDER BY p.product_price ASC";
+							break;
+							case 2:
+								$orderStr = " ORDER BY p.product_price DESC";
+							break;
+							case 3:
+								$orderStr = " ORDER BY p.product_name ASC";
+							break;
+							case 4:
+								$orderStr = " ORDER BY p.product_name DESC";
+							break;
+							case 5:
+								$orderStr = " ORDER BY p.product_released_date DESC";
+							break;
+							case 6:
+								$orderStr = " ORDER BY p.product_released_date ASC";
+							break;
+							default:
+								$orderStr = "ORDER BY p.product_name ASC";
+							break;
+						}
+					}
+					else
+					{
+						$orderStr = "ORDER BY p.product_name ASC";
+					}
+
+					if(isset($_REQUEST["cat"]))
+					{
+						$cat = $_REQUEST["cat"];
+						switch ($cat)
+						{
+							case 'FPS':
+								$whereStr = " AND c.category_code = 'FPS'";
+							break;
+							case 'RPG':
+								$whereStr = " AND c.category_code = 'RPG'";
+							break;
+							case 'ACT':
+								$whereStr = " AND c.category_code = 'ACT'";
+							break;
+							case 'STR':
+								$whereStr = " AND c.category_code = 'STR'";
+							break;
+							case 'ADV':
+								$whereStr = " AND c.category_code = 'ADV'";
+							break;
+							case 'SR':
+								$whereStr = " AND c.category_code = 'SR'";
+							break;
+							default:
+								$whereStr = "";
+							break;
+						}
+					}
+					else
+					{
+						$whereStr = "";
+					}
 					
 					// echo $whereStr;die;
 					$sqlDisplay =
@@ -147,9 +213,10 @@ div.img:hover
 						SELECT p.*, plt.*
 						FROM product p
 						LEFT JOIN platform plt ON p.platform_id = plt.platform_id
+						LEFT JOIN category c ON p.category_id = c.category_id
 						WHERE p.product_isActive = 1
 						$whereStr
-						ORDER BY p.product_name ASC
+						$orderStr
 					"; 
 					// echo "<pre>$sqlDisplay</pre>";die;
 					$resultDisplay = mysqli_query($conn, $sqlDisplay);
@@ -174,62 +241,6 @@ div.img:hover
 				<?php
 					}
 				?>
-				<!-- <div class="img">
-					<p><a href="ps4productdetail1.html"><img src="image/ps4game1.jpg"/></a></p>
-					<p>Accel World vs Sword Art Online(PS4)</p>
-					<p><del>RM169.00</del>&nbsp <ins>RM159.00</ins></p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img" >
-					<p><a href="#"><img src="image/ps4game2.jpg"/></a></p>
-					<p>Far Cry 5 Deluxe Edition (PS4)</p>
-					<p>RM269.00</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img">
-					<p><a href="#"><img src="image/ps4game3.jpg"/></a></p>
-					<p>Ark Survival Evolved (PS4)</p>
-					<p><del>RM199.00</del>&nbsp <ins>RM189.00</ins></p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				
-				<div class="img">
-					<p><a href="#"><img src="image/xboxgame1.jpg" /></a></p>
-					<p>Super Lucky's Tale(XBOX ONE)</p>
-					<p>RM 116.00</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img" >
-					<p><a href="#"><img src="image/xboxgame2.jpg" /></a></p>
-					<p>Minecraft with Explorers Pack(XBOX ONE)</p>
-					<p>RM 116.00</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img">
-					<p><a href="#"><img src="image/xboxgame3.jpg" /></a></p>
-					<p>Gears of War 4 Ultimate Edition(XBOX ONE)</p>
-					<p>RM 234.00</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				
-				<div class="img">
-					<p><a href="#"><img src="image/pcgame1.jpg" /></a></p>
-					<p>Grand Theft Auto IV(PC)</p>
-					<p>RM168.00</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img" >
-					<p><a href="#"><img src="image/pcgame2.jpg" /></a></p>
-					<p>Assassin's Creed Brotherhood(PC)</p>
-					<p>RM93.90</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div>
-				<div class="img">
-					<p><a href="#"><img src="image/pcgame3.jpg" /></a></p>
-					<p>The Witcher 3: Wild Hunt(PC)</p>
-					<p>RM181.90</p>
-					<p><button name="addbtn">ADD TO CART</button></p>
-				</div> -->
 			</div>
 		</div>
 		
@@ -238,3 +249,19 @@ div.img:hover
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+$(document).on("change", "select[id='sortby']", function() 
+{
+	// console.log(document.URL);
+	var url = document.URL + "&sortby=" + $(this).val();
+	// console.log(url);
+	window.location.replace(url);
+});
+
+$(document).on('change', "input[type='radio']", function()
+{
+	var url = "product.php?cat=" + $(this).val();
+	// console.log(url);
+	window.location.replace(url);
+});
+</script>

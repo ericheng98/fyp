@@ -39,6 +39,7 @@
 {
 	margin-bottom: 50px;
 	clear:both;
+	width: 100%;
 }
 .right table
 {
@@ -46,6 +47,7 @@
 	border-spacing: 0px;
 	border: 1px solid silver;
 	font-size: 1em;
+	width: 100%;
 }
 .right tr td,th
 {
@@ -70,13 +72,50 @@
 	filter:brightness(80%);
 	cursor: pointer;
 }
+#img
+{
+	width: 60%;
+}
+#b
+{
+	background-color: white;
+}
+#b:hover
+{
+	filter:brightness(100%);
+}
 </style>
 </head>
 <body>
 	<div class="mainwrapper">
 		<?php 
 			require 'html/header.html';
-			require 'include/identity.php'; 
+			if (!isset($_SESSION["loggedin"]))
+			{
+				header("Location: login.php");
+			}
+			require 'include/identity.php';
+			if($_SESSION["sess_acc"] == "superuser")
+			{
+				$sql = 
+				"
+					SELECT a.admin_code AS code, a.admin_name AS name, a.admin_image AS image, a.admin_IC AS ic, a.admin_joinDate AS joinDate,
+						   a.admin_id AS id
+					FROM admin a
+					WHERE a.admin_isActive = 1
+				";
+			}
+			else if($_SESSION["sess_acc"] == "admin")
+			{
+				$sql =
+				"
+					SELECT s.staff_code AS code, s.staff_name AS name, s.staff_image AS image, s.staff_IC AS ic, s.staff_joinDate AS joinDate,
+						   s.staff_id AS id
+					FROM staff s
+					WHERE s.staff_isActive = 1
+				";
+			} 
+			$result = mysqli_query($conn, $sql);
 		?>
 		<div class="main">
 			<div class="left">
@@ -92,47 +131,140 @@
 			</div>
 			<div class="right">
 				<h1>Staff</h1>
-				<a href="#"><button name="newbtn">ADD NEW STAFF</button></a>
+				<a href="newstaff.php"><button name="newbtn">ADD NEW STAFF</button></a>
+				<form method="post">
 				<table style="clear: both">
 					<tr class="topic">
 						<th style="width: 3%">#</th>
-						<th style="width: 7%">Staff ID</th>
+						<th style="width: 10%">Staff ID</th>
 						<th style="width: 20%">Staff Name</th>
 						<th style="width: 20%">Staff Image</th>
 						<th style="width: 10%">I/C Number</th>
-						<th style="width: 8%">Salary(RM)</th>
 						<th style="width: 10%">Join Date</th>
 						<th style="width: 10%">Remove</th>
 					</tr>
+					<?php
+					while($row = mysqli_fetch_assoc($result))
+					{
+						$i = 1;
+					?>
 					<tr>
-						<td>1</td>
-						<td style="color: blue">S01928</td>
-						<td>Heng Wei Bing</td>
-						<td><img src="image/staff1.jpg"/></td>
-						<td>980901-01-6111</td>
-						<td>1800.00</td>
-						<td>27/06/2017</td>
+						<td><?php echo $i; ?></td>
+						<td style="color: blue; text-align: center;"><?php echo $row["code"]; ?></td>
+						<td><?php echo $row["name"]; ?></td>
+						<td><img src="images/<?php echo $row["image"] ?>" id="img" /></td>
+						<td style="text-align: center;"><?php echo $row["ic"]; ?></td>
+						<td style="text-align: center;"><?php echo $row["joinDate"]; ?></td>
 						<td style="text-align: center">
-							<img src="image/remove.png" style="width: 25%"/>
+							<button name="del" onclick="return con();" value="<?php echo $row["id"]; ?>" id="b" >
+								<img src="image/remove.png" style="width: 25%"/>
+							</button>
+						</td>
+						<td style="text-align: center">
+							<button name="btn" onclick="return confirmation();" value="<?php echo $row["id"]; ?>">
+								RESET PASSWORD
+							</button>
 						</td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<td style="color: blue">S01761</td>
-						<td>Heng Yong Chang</td>
-						<td><img src="image/user.jpg" style="width: 60%;"/></td>
-						<td>9807072-01-6311</td>
-						<td>2100.00</td>
-						<td>21/03/2017</td>
-						<td style="text-align: center"> 
-							<img src="image/remove.png" style="width: 25%"/>
-						</td>
-					</tr>
+					<?php
+						$i++;
+					}
+					?>
 				</table>
+				</form>
 				<a href="#"><button name="nextbtn">NEXT PAGE</button></a>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php require 'html/footer.html'; ?>
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+	function confirmation()
+	{
+		var answer = confirm("Confirm reset password?");
+		return answer;
+	}
+	function con()
+	{
+		var ans = confirm("Do you want to delete?");
+		return ans;
+	}
+</script>
+<?php
+if(isset($_POST["btn"]))
+{
+	$id = $_POST["btn"];
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $newpassword = '';
+    $length = 10;
+    for ($i = 0; $i < $length; $i++) 
+    {
+        $newpassword .= $characters[rand(0, $charactersLength - 1)];
+    }
+
+    $encriptpw = md5($newpassword);
+
+    if($_SESSION["sess_acc"] == "superuser")
+    {
+    	$sql =
+    	"
+    		UPDATE admin
+    		SET admin_password = '$encriptpw'
+    		WHERE admin_id = $id
+    	";
+    }
+
+    if($_SESSION["sess_acc"] == "admin")
+    {
+    	$sql =
+    	"
+    		UPDATE staff
+    		SET staff_password = '$encriptpw'
+    		WHERE staff_id = $id
+    	";
+    }
+    // echo $sql;die;
+    mysqli_query($conn, $sql);
+?>
+<script type="text/javascript">
+	alert("Password has been reset! New password : <?php echo $newpassword; ?>");
+</script>
+<?php
+}
+
+if(isset($_POST["del"]))
+{
+	$id = $_POST["del"];
+
+	if($_SESSION["sess_acc"] == "superuser")
+    {
+    	$sql =
+    	"
+    		UPDATE admin
+    		SET admin_isActive = 0
+    		WHERE admin_id = $id
+    	";
+    }
+
+    if($_SESSION["sess_acc"] == "admin")
+    {
+    	$sql =
+    	"
+    		UPDATE staff
+    		SET staff_isActive = 0
+    		WHERE staff_id = $id
+    	";
+    }
+    // echo $sql;die;
+    mysqli_query($conn, $sql);
+?>
+<script type="text/javascript">
+	alert("Deleted!");
+	window.location.replace("astaff.php");
+</script>
+<?php
+
+}
+?>

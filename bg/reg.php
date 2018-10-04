@@ -10,7 +10,7 @@
  margin: auto;
  margin: 5% 0px;
 }
-#title
+#top
 {font-size: 2.5em;
 }
 #subtopic
@@ -70,9 +70,12 @@
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html'; 
+			require 'include/identity.php';
+		?>
 		<div class="regf">
-			<p id="title">Create Account</p>
+			<p id="top">Create Account</p>
 			<form name="regform" method="post" action="">
 				<div class="info">
 					<p id="subtopic">Personal Information</p><hr />
@@ -189,6 +192,24 @@ if(isset($_POST["regbtn"]))
 	$userpostcode = $_POST["userpc"];
 	$userphoneno = $_POST["userhp"];
 
+	$today = date('Y-m-d');
+	$d = str_replace('-', '', $today);
+	$num = rand(0,100);
+	$code = "C".$d."00".$num;
+	// echo $code;die;
+	$sqlcode =
+	"
+		SELECT customer_code 
+		FROM customer
+		WHERE customer_code = '$code'
+	";
+	$result = mysqli_query($conn, $sqlcode);
+
+	if(mysqli_num_rows($result) != 0)
+	{
+		$code = "P".$d."00".$num;
+	}
+
 
 	$sql = "select * from customer where customer_email = '$useremail'";
 	$result = mysqli_query($conn,$sql);
@@ -235,7 +256,12 @@ if(isset($_POST["regbtn"]))
 				else
 				{
 					$sql2 = 
-					"insert into customer (customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) values ('$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')";
+					"
+						INSERT INTO customer 
+						(customer_code,customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) 
+						VALUES 
+						('$code',$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')
+					";
 					mysqli_query($conn,$sql2);
 					?>
 					
