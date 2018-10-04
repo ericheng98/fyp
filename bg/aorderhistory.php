@@ -169,7 +169,7 @@ button#btn:hover
 								}
 								else
 								{
-									$('#status').css('color','blue');
+									$('#status').css('color','green');
 									$('#btn').css('display','none');
 								}
 							</script>

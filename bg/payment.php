@@ -178,7 +178,7 @@ if(isset($_POST["order"]))
 
 	if(mysqli_num_rows($result) != 0)
 	{
-		$code = $platform."/".$date."/".rand(0,10000);
+		$code = "P".$d."00".$num;
 	}
 
 	if($cardnumber == "")

@@ -143,7 +143,19 @@
 							?>
 						</td>
 						<td style="text-align: center;"><?php echo $rowOrder["order_total_price"]; ?></td>
-						<td style="text-align: center;"><?php echo $rowOrder["status"]; ?></td>
+						<td style="text-align: center;" id="status"><?php echo $rowOrder["status"]; ?></td>
+						<script type="text/javascript">
+							var status = <?php echo $rowOrder["order_status"]; ?>;
+							if(status == 0)
+							{
+								$("#status").css('color','red');
+							}
+							else
+							{
+								$('#status').css('color','green');
+								$('#btn').css('display','none');
+							}
+						</script>
 					</tr>
 					<!-- <tr>
 						<td>2</td>
