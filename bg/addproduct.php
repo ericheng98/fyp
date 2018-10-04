@@ -155,7 +155,7 @@ input[type="submit"]:hover
 									$resultCategory = mysqli_query($conn, $sqlCategory);
 									while($rowCategory = mysqli_fetch_assoc($resultCategory))
 									{
-									 echo'<input type="checkbox" name="category" value='.$rowCategory["category_id"].' >'.$rowCategory["category_name"].' ';
+									 echo'<input type="radio" name="category" value='.$rowCategory["category_id"].' >'.$rowCategory["category_name"].' ';
 									}
 								?>
 							</td>

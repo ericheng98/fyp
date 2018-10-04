@@ -167,6 +167,19 @@ if(isset($_POST["order"]))
 	$d = str_replace('-', '', $date);
 	$num = rand(0,100);
 	$code = "P".$d."00".$num;
+	// echo $code;die;
+	$sqlcode =
+	"
+		SELECT order_code 
+		FROM orders
+		WHERE order_code = '$code'
+	";
+	$result = mysqli_query($conn, $sqlcode);
+
+	if(mysqli_num_rows($result) != 0)
+	{
+		$code = $platform."/".$date."/".rand(0,10000);
+	}
 
 	if($cardnumber == "")
 	{
@@ -236,7 +249,7 @@ if(isset($_POST["order"]))
 	}
 ?>
 <script type="text/javascript">
-	window.location.replace("thankyoupage.php");
+	window.location.replace("loading.php");
 </script>
 <?php
 }

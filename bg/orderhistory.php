@@ -49,7 +49,7 @@
 	border-collapse: collapse;
 	border-spacing: 0px;
 	border: 1px solid silver;
-	width: 90%;
+	width: 100%;
 	font-size: 1em;
 }
 .right tr td,th
@@ -60,6 +60,15 @@
 .right tr a
 {
 	text-decoration: none;
+}
+#url
+{
+	color: blue;
+}
+#url:hover
+{
+	color: red;
+	text-decoration: underline;
 }
 </style>
 </head>
@@ -72,6 +81,17 @@
 				header("Location: login.php");
 			}
 			require 'include/identity.php';
+
+			$cus = $_SESSION["sess_memid"];
+			$sqlOrder = 
+			"
+				SELECT o.*,
+				IF(o.order_status = 0, 'Pending', 'Delivered') as status
+				FROM orders o
+				WHERE o.customer_id = $cus
+				ORDER BY o.order_date DESC
+			";
+			$resultOrder = mysqli_query($conn, $sqlOrder);
 		?>
 		<div class="main">
 			<div class="left">
@@ -81,24 +101,51 @@
 				<ul>
 			</div>
 			<div class="right">
-				<table>
+				<table width="100%">
 					<tr class="topic">
 						<th style="width: 5%">#</th>
-						<th style="width: 10%">Order</th>
-						<th style="width: 15%">Date</th>
+						<th style="width: 15%">Order</th>
+						<th style="width: 10%">Date</th>
 						<th style="width: 35%">Product</th>
 						<th style="width: 10%">Payment(RM)</th>
 						<th style="width: 10%">Status</th>
 					</tr>
+					<?php
+					while($rowOrder = mysqli_fetch_assoc($resultOrder))
+					{
+						$orderID = $rowOrder["order_id"];
+						$i = 1;
+					?>
 					<tr>
-						<td>1</td>
-						<td style="color: blue">B112290P330</td>
-						<td>22/02/2018<br>1038 HRS</td>
-						<td><a href="#">Ark Survival Evolved (PS4)</a> * 1</td>
-						<td>189.00</td>
-						<td style="color: orange">Posting</td>
+						<td><?php echo $i; ?></td>
+						<td style="color: blue; text-align: center;"><?php echo $rowOrder["order_code"]; ?></td>
+						<td style="text-align: center;"><?php echo $rowOrder["order_date"]; ?></td>
+						<td>
+							<?php
+							$sqlProduct =
+							"
+								SELECT od.*, p.*
+								FROM order_details od
+								LEFT JOIN product p ON od.product_id = p.product_id
+								WHERE od.order_id = $orderID
+							";
+							$resultProduct = mysqli_query($conn, $sqlProduct);
+							while($rowProduct = mysqli_fetch_assoc($resultProduct))
+							{
+							?>
+							<a href="productdetail.php?pid=<?php echo $rowProduct['product_id']; ?>" id="url">
+								<p>
+									<?php echo $rowProduct["product_name"]; ?>
+								</p>
+							</a>
+							<?php
+							}
+							?>
+						</td>
+						<td style="text-align: center;"><?php echo $rowOrder["order_total_price"]; ?></td>
+						<td style="text-align: center;"><?php echo $rowOrder["status"]; ?></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>2</td>
 						<td style="color: blue">B102290P190</td>
 						<td>20/02/2018<br>1546 HRS</td>
@@ -113,13 +160,17 @@
 						<td><a href="#">Warriors All-stars (PS4)</a> * 1</td>
 						<td>99.00</td>
 						<td style="color: green">Delivered</td>
-					</tr>
+					</tr> -->
+					<?php
+						$i++;
+					}
+					?>
 				</table>
 			</div>
 		</div>
 		<?php 
-			require 'html/footer.html' 
-			?>
+			require 'html/footer.html'; 
+		?>
 	</div>
 </body>
 </html>

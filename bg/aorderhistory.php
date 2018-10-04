@@ -38,6 +38,7 @@
 {
 	margin-bottom: 50px;
 	clear:both;
+	width: 100%;
 }
 .right table
 {
@@ -45,6 +46,7 @@
 	border-spacing: 0px;
 	border: 1px solid silver;
 	font-size: 1em;
+	width: 100%;
 }
 .right tr td,th
 {
@@ -54,6 +56,20 @@
 .right tr a
 {
 	text-decoration: none;
+}
+button#btn
+{
+	font-size: 1.1em;
+	padding: 1%;
+	width: 100%;
+	background-color: black;
+	color: white;
+	border: none; 
+}
+button#btn:hover
+{
+	background-color: #8CC63F;
+	cursor: pointer;
 }
 </style>
 </head>
@@ -66,6 +82,17 @@
 				header("Location: login.php");
 			}
 			require 'include/identity.php';
+
+			$sqlOrder =
+			"
+				SELECT o.*, c.customer_code,
+				IF(o.order_status = 0, ' - ', s.staff_code) AS approveBy,
+				IF(o.order_status = 0, 'Pending', 'Delivered') AS status
+				FROM orders o
+				LEFT JOIN customer c ON o.customer_id = c.customer_id
+				LEFT JOIN staff s ON o.staff_id = s.staff_id
+			";
+			$resultOrder = mysqli_query($conn, $sqlOrder);
 		?>
 		<div class="main">
 			<div class="left">
@@ -80,82 +107,111 @@
 				</div>
 			</div>
 			<div class="right">
+				<form name="historyfrm" method="POST">
 				<h1>Order History</h1>
 				<table>
 					<tr class="topic">
 						<th style="width: 5%">#</th>
-						<th style="width: 13%">Order</th>
-						<th style="width: 15%">Date</th>
+						<th style="width: 12%">Order</th>
+						<th style="width: 10%">Date</th>
 						<th style="width: 25%">Product</th>
 						<th style="width: 12%">Payment(RM)</th>
 						<th style="width: 10%">Status</th>
-						<th style="width: 10%">Order By</th>
-						<th style="width: 10%">Approved By</th>
+						<th style="width: 9%">Order By</th>
+						<th style="width: 9%">Approved By</th>
 					</tr>
-					<tr>
-						<td>1</td>
-						<td style="color: blue">B112290P330</td>
-						<td>22/02/2018<br>1038 HRS</td>
-						<td><a href="#">Ark Survival Evolved (PS4)</a> * 1</td>
-						<td>189.00</td>
-						<td style="color: orange">Posting</td>
-						<td>C00199</td>
-						<td>S01928</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td style="color: blue">B102290P190</td>
-						<td>20/02/2018<br>1546 HRS</td>
-						<td><a href="#">Battlezone (PS4)</a> * 1</td>
-						<td>99.00</td>
-						<td style="color: green">Delivered</td>
-						<td>C00199</td>
-						<td>S01928</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td style="color: blue">B100190P101</td>
-						<td>12/01/2018<br>1718 HRS</td>
-						<td><a href="#">Warriors All-stars (PS4)</a> * 1</td>
-						<td>99.00</td>
-						<td style="color: green">Delivered</td>
-						<td>C00199</td>
-						<td>S01928</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td style="color: blue">B100013P281</td>
-						<td>10/01/2018<br>1245 HRS</td>
-						<td><a href="#">Far Cry 5 Deluxe Edition (PS4)</a> * 1</td>
-						<td>269.00</td>
-						<td style="color: green">Delivered</td>
-						<td>C00136</td>
-						<td>S01282</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td style="color: blue">B103932P191</td>
-						<td>29/12/2018<br>0912 HRS</td>
-						<td><a href="#">Devil May Cry HD Collection (PS4)</a> * 1</td>
-						<td>159.00</td>
-						<td style="color: green">Delivered</td>
-						<td>C00721</td>
-						<td>S01282</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td style="color: blue">B193265P094</td>
-						<td>25/12/2018<br>1956 HRS</td>
-						<td><a href="#">Overwatch (PC)</a> * 1</td>
-						<td>239.00</td>
-						<td style="color: green">Delivered</td>
-						<td>C12348</td>
-						<td>S01761</td>
-					</tr>
+					<?php
+					while($rowOrder = mysqli_fetch_assoc($resultOrder))
+					{
+						$i = 1;
+						$orderID = $rowOrder["order_id"];
+					?>
+						<tr>
+							<td><?php echo $i; ?></td>
+							<td style="color: blue; text-align: right;"><?php echo $rowOrder["order_code"]; ?></td>
+							<td style="text-align: center;"><?php echo $rowOrder["order_date"]; ?></td>
+							<td>
+								<?php
+								$sqlProduct =
+								"
+									SELECT od.*, p.*
+									FROM order_details od
+									LEFT JOIN product p ON od.product_id = p.product_id
+									WHERE od.order_id = $orderID 
+								";
+								$resultProduct = mysqli_query($conn, $sqlProduct);
+								while($rowP = mysqli_fetch_assoc($resultProduct))
+								{
+								?>
+									<p>
+										<a href="productdetail.php?pid=<?php echo $rowP["product_id"]; ?>">
+											<?php echo $rowP["product_name"]; ?>
+										</a>
+									</p>
+								<?php
+								}
+								?>
+							</td>
+							<td style="text-align: center;"><?php echo $rowOrder["order_total_price"]; ?></td>
+							<td style="text-align: center;" id="status"><?php echo $rowOrder["status"]; ?></td>
+							<td style="text-align: center;"><?php echo $rowOrder["customer_code"]; ?></td>
+							<td style="text-align: center;"><?php echo $rowOrder["approveBy"]; ?></td>
+							<td>
+								<button name="update" value="<?php echo $rowOrder["order_id"]; ?>" id="btn" onclick="return confirmation();">
+									Update
+								</button>
+							</td>
+							<script type="text/javascript">
+								var status = <?php echo $rowOrder["order_status"]; ?>;
+								if(status == 0)
+								{
+									$("#status").css('color','red');
+								}
+								else
+								{
+									$('#status').css('color','blue');
+									$('#btn').css('display','none');
+								}
+							</script>
+						</tr>
+					<?php
+						$i++;
+					}
+					?>
 				</table>
+				</form>
 			</div>
 		</div>
-		<?php require 'html/footer.html' ?>
+		<?php 
+			require 'html/footer.html'; 
+		?>
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+function confirmation()
+{
+	var anwswer = confirm("Confirm update this order?");
+	return answer;
+}
+</script>
+<?php
+if(isset($_POST["update"]))
+{
+	$oID = $_POST["update"];
+	$id = $_SESSION["sess_memid"];
+	$sqlUpdate = 
+	"
+		UPDATE orders 
+		SET order_status = 1, staff_id = $id
+		WHERE order_id = $oID
+	";
+	mysqli_query($conn, $sqlUpdate);
+?>
+<script type="text/javascript">
+	alert("Successfully update !");
+	window.location.replace("aorderhistory.php");
+</script>
+<?php
+}
+?>

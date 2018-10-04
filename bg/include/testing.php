@@ -1,2 +1,10 @@
+<form method="post">
+	<button name="test" value=3> testing</button>
+</form>
+
 <?php
-echo $_SESSION["username"];
+if (isset($_POST["test"])) 
+{
+	echo $_POST["test"];
+}
+?>
