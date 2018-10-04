@@ -102,7 +102,7 @@
 				<input type="radio" name="login_as" value="admin" /> Admin
 				<input type="radio" name="login_as" value="staff" /> Staff
 				</p>
-				<p><span id="forget"><a href="#">Forget Password?</a></span></p>
+				<p><span id="forget"><a href="forgetpw.php">Forget Password?</a></span></p>
 				<p><input type="submit" name="signinbtn" value="SIGN IN" /></p>
 				</form>
 			</div>
@@ -228,7 +228,13 @@ if(isset($_POST["signinbtn"]))
 		$_SESSION["sess_acc"] = $acctype;
 		$_SESSION["username"] = $row[$name];
 		// echo $_SESSION["username"];die;
-		header("Location: ".$url);
+		// header("Location: ".$url);
+?>
+<script type="text/javascript">
+	var url = "<?php echo $url; ?>";
+	window.location.replace(url);
+</script>
+<?php
 	}
 }
 
@@ -240,3 +246,4 @@ if(isset($_POST["signinbtn"]))
 	</div>
 </body>
 </html>
+
