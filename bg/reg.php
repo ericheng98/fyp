@@ -83,11 +83,14 @@
 					</tr>
 					<tr>
 						<td>Birthday*</td>
-						<td><input type="date" name="userbd" required/></td>
+						<?php 
+							$date=date('Y-m-d', strtotime('-18 years'));
+						?>
+						<td><input type="date" name="userbd" required  max="<?php echo $date ?>"/></td>
 					</tr>
 					<tr>
 						<td>I/C Number*</td>
-						<td><input type="text" name="useric" required/></td>
+						<td><input type="text" name="useric" required placeholder="Eg: 980702016311" pattern="[0-9]{12}"/></td>
 					</tr>
 				</table>
 				</div>
@@ -104,11 +107,11 @@
 					</tr>
 					<tr>
 						<td>Password*</td>
-						<td><input type="password" name="userps" placeholder="At least consist 8-16 words and numbers" required/></td>
+						<td><input type="password" name="userps" placeholder="At least consist 8-16 words and numbers" required maxlength="16" minlength="8" /></td>
 					</tr>
 					<tr>
 						<td>Confirm Password*</td>
-						<td><input type="password" name="userconfirmps" required/></td>
+						<td><input type="password" name="userconfirmps" required maxlength="16" minlength="8"/></td>
 					</tr>
 				</table>
 				</div>
@@ -119,30 +122,27 @@
 						<td>Address*</td>
 						<td><input type="text" name="useradd" size="80" required/></td>
 					</tr>
-					<tr>
-						<td>Country*</td>
-						<td><select name="country">
-								<option value="mys" selected>Malaysia</option>
+						<td><select name="country" hidden>
+								<option value="Malaysia" selected>Malaysia</option>
 							</select>
 						</td>
-					</tr>
 					<tr>
 						<td>State*</td>
 						<td><select name="state" required>
 								<option value="default" selected>Choose Your State</option>
-								<option value="jh">Johor</option>
-								<option value="kd">Kedah</option>
-								<option value="kt">Kelantan</option>
-								<option value="mlk">Malacca</option>
-								<option value="ns">Negeri Sembilan</option>
-								<option value="ph">Pahang</option>
-								<option value="pk">Perak</option>
-								<option value="pr">Perlis</option>
-								<option value="pp">Pulau Pinang</option>
-								<option value="sb">Sabah</option>
-								<option value="srw">Sarawak</option>
-								<option value="sg">Selangor</option>
-								<option value="tg">Terengganu</option>
+								<option value="Johor">Johor</option>
+								<option value="Kedah">Kedah</option>
+								<option value="Kelantan">Kelantan</option>
+								<option value="Malacca">Malacca</option>
+								<option value="Negeri Sembilan">Negeri Sembilan</option>
+								<option value="Pahang">Pahang</option>
+								<option value="Perak">Perak</option>
+								<option value="Perlis">Perlis</option>
+								<option value="Pulau Pinang">Pulau Pinang</option>
+								<option value="Sabah">Sabah</option>
+								<option value="Sarawak">Sarawak</option>
+								<option value="Selangor">Selangor</option>
+								<option value="Terengganu">Terengganu</option>
 							</select>
 						</td>
 					</tr>
@@ -152,11 +152,11 @@
 					</tr>
 					<tr>
 						<td>Postcode*</td>
-						<td><input type="text" name="userpc" size="5" required/></td>
+						<td><input type="text" name="userpc" size="5" required placeholder="81620" /></td>
 					</tr>
 					<tr>
 						<td>Phone Number*</td>
-						<td><input type="text" name="userhp" size="15" required/></td>
+						<td><input type="text" name="userhp" size="15" required placeholder="Eg: 01135338702" pattern="[0-9]{10，11}"/></td>
 					</tr>
 				</table>
 				</div>
@@ -238,10 +238,28 @@ if(isset($_POST["regbtn"]))
 					"insert into customer (customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) values ('$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')";
 					mysqli_query($conn,$sql2);
 					?>
-					<script type="text/javascript">
-						alert(" <?php echo'Thank You '.$username.'. Your registration is successful'; ?>");
-					</script>
+					
 					<?php
+
+					
+					$subject = 'Hello from BULLs GAMING ONLINE STORE!';
+					$message = 
+					"
+					Hi, $username. 
+					This is an automatic response sent when registering an email address on BULLs GAMING.
+					Your registration is successful. Thank you for register on our website.
+					";
+					$headers = "From: bullsgamingonlinegamestore@gmail.com\r\n";
+
+
+					if (mail($useremail, $subject, $message, $headers)) 
+					{
+						?>
+					   <script type="text/javascript">
+						alert(" <?php echo'Thank You '.$username.'. Your registration is successful'; ?>");
+						</script>
+					   <?php
+					}
 				}
 				
 			}

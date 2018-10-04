@@ -65,6 +65,7 @@ $row = mysqli_fetch_assoc($result);
 	margin: 10px 20px;
 	text-align: right;
 }
+
 .right button
 {
 	background-color: #8CC63F;
@@ -83,9 +84,8 @@ $row = mysqli_fetch_assoc($result);
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php 
-			require 'html/header.html';
-			if (!isset($_SESSION["loggedin"]))
+		<?php require 'html/header.html'; 
+		if (!isset($_SESSION["loggedin"]))
 			{
 				header("Location: login.php");
 			}
@@ -95,10 +95,11 @@ $row = mysqli_fetch_assoc($result);
 			<div class="left">
 				<ul>
 					<li><a href="account.php">My Account</a></li>
-					<li><a href="orderhistory.php">Order History</a></li>
+					<li><a href="orderhistory.html">Order History</a></li>
 					<li><a href="#">Weekly Log</a></li>
 				<ul>
 			</div>
+			<form name="edit" method="POST">
 			<div class="right">
 				<h1>My Profile</h1>
 				<table>
@@ -108,7 +109,7 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 					<tr>
 						<td>User Name</td>
-						<td><input type="text" name="username" value="<?php echo $row["customer_name"] ?>" readonly /></td>
+						<td><input type="text" name="username" value="<?php echo $row["customer_name"] ?>" required/></td>
 					</tr>
 					<tr>
 						<td>Email</td>
@@ -120,7 +121,8 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 					<tr>
 						<td>User Contact Number</td>
-						<td><input type="text" name="userCNo" value="<?php echo $row["customer_contactNo"] ?>" readonly /></td>
+						<td><input type="text" name="userCNo" pattern="[0-9]{10,11}" value="<?php echo $row["customer_contactNo"] ?>"
+							required/></td>
 					</tr>
 					<tr>
 						<td>User Birthday</td>
@@ -128,38 +130,72 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" readonly /></td>
+						<td><input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" required /></td>
 					</tr>
 					<tr>
 						<td>City</td>
-						<td><input type="text" name="userc" value="<?php echo $row["customer_city"] ?>" readonly /></td>
+						<td><input type="text" name="userc" value="<?php echo $row["customer_city"] ?>" required /></td>
 					</tr>
 					<tr>
 						<td>Postcode</td>
-						<td><input type="text" name="userpc" value="<?php echo $row["customer_postcode"] ?>" readonly /></td>
+						<td><input type="text" name="userpc" value="<?php echo $row["customer_postcode"] ?>" required /></td>
 					</tr>
 					<tr>
 						<td>State</td>
-						<td><input type="text" name="userstate" value="<?php echo $row["customer_state"] ?>" readonly /></td>
+						<td>
+							<select name="state" value="<?php echo $row["customer_state"] ?> >
+								<option value="default" selected>Choose Your State</option>
+								<option value="Johor">Johor</option>
+								<option value="Kedah">Kedah</option>
+								<option value="Kelantan">Kelantan</option>
+								<option value="Malacca">Malacca</option>
+								<option value="Negeri Sembilan">Negeri Sembilan</option>
+								<option value="Pahang">Pahang</option>
+								<option value="Perak">Perak</option>
+								<option value="Perlis">Perlis</option>
+								<option value="Pulau Pinang">Pulau Pinang</option>
+								<option value="Sabah">Sabah</option>
+								<option value="Sarawak">Sarawak</option>
+								<option value="Selangor">Selangor</option>
+								<option value="Terengganu">Terengganu</option>
+							</select>
+						</td>
 					</tr>
 				</table>
-				<button name="editbtn" onclick="edit()">EDIT</button>
-				<button name="editpwbtn" onclick="editpw()">EDIT PASSWORD</button>
+
+				<button name="updatebtn" >Update</button>
 			</div>
+			</form>
 		</div>
 		<?php require 'html/footer.html' ?>
 	</div>
 </body>
 </html>
 
-<script type="text/javascript">
-	function edit()
+<?php
+	if(isset($_POST["updatebtn"]))
 	{
-		window.location.replace("editprofile.php");
-	}
-	function editpw()
-	{
-		window.location.replace("editpw.php");
-	}
+		$username = $_POST["username"];
+		$userphoneno = $_POST["userCNo"];
+		$useraddress = $_POST["usera"];
+		$userc = $_POST["userc"];
+		$userpostcode = $_POST["userpc"];
+		$userstate = $_POST["state"];
 	
+		$sql = 
+		"
+		UPDATE customer 
+		SET customer_name = \"$username\", customer_contactNo = '$userphoneno', customer_address = '$useraddress', 
+			customer_city = \"$userc\", customer_postcode = '$userpostcode', 
+			customer_state = '$userstate' WHERE customer_id = $sess_memid 
+		";
+
+		mysqli_query($conn,$sql);
+?>
+<script type="text/javascript">
+	alert("Update successfully!!");
+	window.location.replace("account.php");
 </script>
+<?php
+	}
+?>
