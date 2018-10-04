@@ -279,7 +279,7 @@ if(isset($_POST["addbtn"]))
 			'release_date' => $row["product_released_date"]
 		);
 		$_SESSION["shopping_cart"][0] = $item_array;
-		$msg = "Success added to cart!";
+		$msg = "Added to cart!";
 		$added = 0;
 	}
 ?>

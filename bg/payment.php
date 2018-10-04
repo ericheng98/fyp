@@ -103,7 +103,7 @@ table td p
 						<td>
 							<p>Credit or Debit Card</p>
 							<p><img src="image/creditcard.png" /></p>
-							<p><input type="radio" name="paymentmethod"/></p>
+							<p><input type="radio" name="paymentmethod" checked /></p>
 						</td>
 						<td>
 							<!-- <p>Online Banking (FPX)</p> -->
@@ -163,6 +163,10 @@ if(isset($_POST["order"]))
 	$total = $_SESSION["total"];
 	$delivery = $_SESSION["address"];
 	$date = date("Y-m-d");
+	$customer = $_SESSION["sess_memid"];
+	$d = str_replace('-', '', $date);
+	$num = rand(0,100);
+	$code = "P".$d."00".$num;
 
 	if($cardnumber == "")
 	{
@@ -186,19 +190,54 @@ if(isset($_POST["order"]))
 	}
 	else
 	{
-		$msg = "";
-	}
-
-	if(!empty($_SESSION["shopping_cart"]))
-	{
 		$sqlOrder = 
 		"
-			INSERT INTO 
-			order (order_total_price, order_status, order_date, order_deliveryAddress)
+			INSERT INTO orders
+			(order_code, order_total_price, order_status, order_date, order_deliveryAddress, payment_method, customer_id)
 			VALUES
-			($total, 0, '$date', \"$delivery\")
+			($code, $total, 0, '$date', \"$delivery\", \"VISA/CREDIT\",$customer)
 		";
-		echo "<pre>$sqlOrder;</pre>";
+		// echo $sqlOrder;die;
+		mysqli_query($conn, $sqlOrder);
+		$done = 1;
 	}
+	if($done == 1)
+	{
+		$sql = 
+		"
+			SELECT max(order_id) AS order_id
+			FROM orders
+		";
+		$result = mysqli_query($conn, $sql);
+
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$order_id = $row["order_id"];
+			foreach ($_SESSION["shopping_cart"] as $key => $value) 
+			{
+				$product = $value["product_id"];
+				$price = $value["product_price"];
+				$sqlDetail = 
+				"
+					INSERT INTO order_details
+					(order_id, product_id, subtotal)
+					VALUES
+					($order_id, $product, $price)
+				";
+				mysqli_query($conn, $sqlDetail);
+
+			}
+		}
+		$ordered = 1;
+	}
+	if($ordered == 1)
+	{
+		unset($_SESSION["shopping_cart"]);
+	}
+?>
+<script type="text/javascript">
+	window.location.replace("thankyoupage.php");
+</script>
+<?php
 }
 ?>
