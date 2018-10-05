@@ -132,7 +132,7 @@ div.img:hover
 				<br /><br /><br /><br /><br />
 				<?php
 					$orderStr = "ORDER BY p.product_name ASC";
-					
+
 					if(!isset($_REQUEST["platform"]) || $_REQUEST["platform"] == "all")
 					{
 						$where = "";
@@ -198,6 +198,9 @@ div.img:hover
 							case 'SR':
 								$whereStr = " AND c.category_code = 'SR'";
 							break;
+							case 'STI':
+								$whereStr = " AND c.category_code = 'STI'";
+							break;
 							default:
 								$whereStr = "";
 							break;
@@ -225,7 +228,7 @@ div.img:hover
 					if(mysqli_num_rows($resultDisplay) == 0)
 					{
 				?>
-						<h1>Sorry no product found</h1>
+						<h1 style="text-align: center;">Sorry no product found</h1>
 				<?php
 					}
 					while($rowDisplay = mysqli_fetch_assoc($resultDisplay))
