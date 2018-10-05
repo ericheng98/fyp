@@ -2,8 +2,10 @@
 
 include("connection.php");
 
-if($_SESSION["loggedin"]!=1)
+if($_SESSION["loggedin"] != 1)
+{
 	header("Location: login.php");
+}
 
 $sess_memid = $_SESSION["sess_memid"];
 
@@ -96,7 +98,6 @@ $row = mysqli_fetch_assoc($result);
 				<ul>
 					<li><a href="account.php">My Account</a></li>
 					<li><a href="orderhistory.html">Order History</a></li>
-					<li><a href="#">Weekly Log</a></li>
 				<ul>
 			</div>
 			<form name="edit" method="POST">

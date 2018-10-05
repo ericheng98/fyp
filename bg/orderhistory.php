@@ -70,6 +70,11 @@
 	color: red;
 	text-decoration: underline;
 }
+.footer
+{
+	position: absolute;
+	bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -146,33 +151,16 @@
 						<td style="text-align: center;" id="status"><?php echo $rowOrder["status"]; ?></td>
 						<script type="text/javascript">
 							var status = <?php echo $rowOrder["order_status"]; ?>;
-							if(status == 0)
+							if(status == 1)
 							{
 								$("#status").css('color','red');
 							}
 							else
 							{
-								$('#status').css('color','green');
-								$('#btn').css('display','none');
+								$("#status").css('color','green');
 							}
 						</script>
 					</tr>
-					<!-- <tr>
-						<td>2</td>
-						<td style="color: blue">B102290P190</td>
-						<td>20/02/2018<br>1546 HRS</td>
-						<td><a href="#">Battlezone (PS4)</a> * 1</td>
-						<td>99.00</td>
-						<td style="color: green">Delivered</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td style="color: blue">B100190P101</td>
-						<td>12/01/2018<br>1718 HRS</td>
-						<td><a href="#">Warriors All-stars (PS4)</a> * 1</td>
-						<td>99.00</td>
-						<td style="color: green">Delivered</td>
-					</tr> -->
 					<?php
 						$i++;
 					}
