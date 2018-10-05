@@ -1,3 +1,6 @@
+<?php
+	include 'connection.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,26 +64,45 @@
 	background-color: #8CC63F;
 }
 
+.footer
+{
+	position: absolute;
+	bottom: 0;
+}
 </style>
 </head>
 <body>
 	<div class="mainwrapper">
-		<?php require 'html/header.html'; ?>
+		<?php 
+			require 'html/header.html'; 
+			require 'include/identity.php';
+		?>
 		
 		<div class="thank">
 			<h1>Thank For Your Purchase !!!</h1>
 			
 			<div class="shopping">
-				<p><a href="product.html"><button name="continuebtn">CONTINUE SHOPPING</button></a></p>
+				<p><a href="product.php"><button name="continuebtn">CONTINUE SHOPPING</button></a></p>
 			</div>
-			
+			<form method="post">
 			<div class="signout">
-				<p><a href="index.html"><button name="signoutbtn">SIGN OUT</button></a></p>
+				<p><a href="index.php"><button name="signoutbtn">SIGN OUT</button></a></p>
 			</div>
-			
+			</form>
 		</div>
 		
-		<?php require 'html/footer.html' ?>
+		<?php require 'html/footer.html'; ?>
 	</div>
 </body>
 </html>
+<?php
+if(isset($_POST["signoutbtn"]))
+{
+	session_destroy();
+?>
+<script type="text/javascript">
+	window.location.replace('logout.php');
+</script>
+<?php
+}
+?>
