@@ -103,7 +103,7 @@ $row = mysqli_fetch_assoc($result);
 				<table>
 					<tr>
 						<td>Customer Code</td>
-						<td><input type="text" name="userid" value="<?php echo $row["customer_id"] ?>" readonly /></td>
+						<td><input type="text" name="userid" value="<?php echo $row["customer_code"] ?>" readonly /></td>
 					</tr>
 					<tr>
 						<td>User Name</td>

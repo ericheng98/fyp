@@ -93,7 +93,6 @@
 				<p><i><small>**Please sign in with your personal or corporate login</small></i></p>
 				<p><span id="title">Email Address</span><br />
 				<input type="email" name="useremail" size="50" autofocus required /><br />
-				<input type="checkbox" name="rmbme" value="1" /> Remember me</p>
 				<p><span id="title">Password</span><br />
 				<input type="password" name="userpw" required /><br /></p>
 				<p><span id="title">Login As</span><br /><br />

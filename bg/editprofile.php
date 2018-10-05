@@ -63,7 +63,7 @@ $row = mysqli_fetch_assoc($result);
 	height: 30px;
 	width: 100%;
 	margin: 10px 20px;
-	text-align: right;
+	text-align: left;
 }
 
 .right button
@@ -79,6 +79,11 @@ $row = mysqli_fetch_assoc($result);
 {
 	filter:brightness(80%);
 	cursor: pointer;
+}
+#drop
+{
+	margin-left: 8%;
+	height: 30px;
 }
 </style>
 </head>
@@ -105,7 +110,7 @@ $row = mysqli_fetch_assoc($result);
 				<table>
 					<tr>
 						<td>Customer Code</td>
-						<td><input type="text" name="userid" value="<?php echo $row["customer_id"] ?>" readonly /></td>
+						<td><input type="text" name="userid" value="<?php echo $row["customer_code"] ?>" disabled /></td>
 					</tr>
 					<tr>
 						<td>User Name</td>
@@ -113,11 +118,11 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 					<tr>
 						<td>Email</td>
-						<td><input type="text" name="usermail" value="<?php echo $row["customer_email"] ?>" readonly /></td>
+						<td><input type="text" name="usermail" value="<?php echo $row["customer_email"] ?>" disabled /></td>
 					</tr>
 					<tr>
 						<td>User IC</td>
-						<td><input type="text" name="useric" value="<?php echo $row["customer_IC"] ?>" readonly /></td>
+						<td><input type="text" name="useric" value="<?php echo $row["customer_IC"] ?>" disabled /></td>
 					</tr>
 					<tr>
 						<td>User Contact Number</td>
@@ -126,7 +131,7 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 					<tr>
 						<td>User Birthday</td>
-						<td><input type="text" name="userbirthday" value="<?php echo $row["customer_birthday"] ?>" readonly /></td>
+						<td><input type="text" name="userbirthday" value="<?php echo $row["customer_birthday"] ?>" disabled /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
@@ -143,7 +148,7 @@ $row = mysqli_fetch_assoc($result);
 					<tr>
 						<td>State</td>
 						<td>
-							<select name="state" value="<?php echo $row["customer_state"] ?> >
+							<select name="state" id="drop" value="<?php echo $row["customer_state"] ?> >
 								<option value="default" selected>Choose Your State</option>
 								<option value="Johor">Johor</option>
 								<option value="Kedah">Kedah</option>
