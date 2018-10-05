@@ -126,8 +126,8 @@ table td p
 				<div class="cardexpiry">
 					<p>Expiry Date</p>
 					<p>
-						<input type="text" name="cardmm" placeholder="mm" required />/&nbsp;  
-						<input type="text" name="cardyy" placeholder="yy" required />
+						<input type="text" name="cardmm" placeholder="mm" required pattern="[0-9]{2}" max="12" />/&nbsp;  
+						<input type="text" name="cardyy" placeholder="yy" required pattern="[0-9]{2}" />
 					</p>
 				</div>
 				<div class="ccv">
@@ -208,14 +208,12 @@ if(isset($_POST["order"]))
 			INSERT INTO orders
 			(order_code, order_total_price, order_status, order_date, order_deliveryAddress, payment_method, customer_id)
 			VALUES
-			($code, $total, 0, '$date', \"$delivery\", \"VISA/CREDIT\",$customer)
+			('$code', $total, 0, '$date', \"$delivery\", \"VISA/CREDIT\",$customer)
 		";
 		// echo $sqlOrder;die;
 		mysqli_query($conn, $sqlOrder);
 		$done = 1;
-	}
-	if($done == 1)
-	{
+
 		$sql = 
 		"
 			SELECT max(order_id) AS order_id
@@ -243,6 +241,8 @@ if(isset($_POST["order"]))
 		}
 		$ordered = 1;
 	}
+		
+
 	if($ordered == 1)
 	{
 		unset($_SESSION["shopping_cart"]);

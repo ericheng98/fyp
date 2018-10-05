@@ -134,12 +134,12 @@ div.img:hover
 					$orderStr = "ORDER BY p.product_name ASC";
 					if(!isset($_REQUEST["platform"]) || $_REQUEST["platform"] == "all")
 					{
-						$whereStr = "";
+						$where = "";
 					}
 					else
 					{
 						// $display = $_REQUEST["platform"];
-						$whereStr = "AND plt.platform_code = '".$_REQUEST["platform"]."'";
+						$where = "AND plt.platform_code = '".$_REQUEST["platform"]."'";
 					}
 					if(isset($_REQUEST["sortby"]))
 					{
@@ -180,25 +180,25 @@ div.img:hover
 						switch ($cat)
 						{
 							case 'FPS':
-								$whereStr = " AND c.category_code = 'FPS'";
+								$whereStr .= " AND c.category_code = 'FPS'";
 							break;
 							case 'RPG':
-								$whereStr = " AND c.category_code = 'RPG'";
+								$whereStr .= " AND c.category_code = 'RPG'";
 							break;
 							case 'ACT':
-								$whereStr = " AND c.category_code = 'ACT'";
+								$whereStr .= " AND c.category_code = 'ACT'";
 							break;
 							case 'STR':
-								$whereStr = " AND c.category_code = 'STR'";
+								$whereStr .= " AND c.category_code = 'STR'";
 							break;
 							case 'ADV':
-								$whereStr = " AND c.category_code = 'ADV'";
+								$whereStr .= " AND c.category_code = 'ADV'";
 							break;
 							case 'SR':
-								$whereStr = " AND c.category_code = 'SR'";
+								$whereStr .= " AND c.category_code = 'SR'";
 							break;
 							default:
-								$whereStr = "";
+								$whereStr .= "";
 							break;
 						}
 					}
@@ -215,6 +215,7 @@ div.img:hover
 						LEFT JOIN platform plt ON p.platform_id = plt.platform_id
 						LEFT JOIN category c ON p.category_id = c.category_id
 						WHERE p.product_isActive = 1
+						$where
 						$whereStr
 						$orderStr
 					"; 

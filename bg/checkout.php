@@ -220,7 +220,7 @@
 			</table>
 			<div id="button">
 				<input type="submit" id="csbtn" value="< Continue Shopping" name="csbtn" />
-				<input type="submit" id="checkoutbtn" value="Prodceed to payment >" name="checkout"/>
+				<input type="submit" id="checkoutbtn" value="Prodceed to Payment >" name="checkout"/>
 				<!-- <button  name="checkout">Prodceed to payment > </button> -->
 			</div>
 		</div>
