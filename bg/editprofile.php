@@ -61,7 +61,7 @@ $row = mysqli_fetch_assoc($result);
 .right tr td input[type=text]
 {
 	height: 30px;
-	width: 100%;
+	width: 150%;
 	margin: 10px 20px;
 	text-align: left;
 }
@@ -101,7 +101,6 @@ $row = mysqli_fetch_assoc($result);
 				<ul>
 					<li><a href="account.php">My Account</a></li>
 					<li><a href="orderhistory.html">Order History</a></li>
-					<li><a href="#">Weekly Log</a></li>
 				<ul>
 			</div>
 			<form name="edit" method="POST">
@@ -121,21 +120,23 @@ $row = mysqli_fetch_assoc($result);
 						<td><input type="text" name="usermail" value="<?php echo $row["customer_email"] ?>" disabled /></td>
 					</tr>
 					<tr>
-						<td>User IC</td>
+						<td>IC</td>
 						<td><input type="text" name="useric" value="<?php echo $row["customer_IC"] ?>" disabled /></td>
 					</tr>
 					<tr>
-						<td>User Contact Number</td>
+						<td>Contact Number</td>
 						<td><input type="text" name="userCNo" pattern="[0-9]{10,11}" value="<?php echo $row["customer_contactNo"] ?>"
 							required/></td>
 					</tr>
 					<tr>
-						<td>User Birthday</td>
+						<td>Birthday</td>
 						<td><input type="text" name="userbirthday" value="<?php echo $row["customer_birthday"] ?>" disabled /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" required /></td>
+						<td>
+							<input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" required style="width: 200%;" />
+						</td>
 					</tr>
 					<tr>
 						<td>City</td>

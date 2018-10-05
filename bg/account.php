@@ -114,20 +114,22 @@ $row = mysqli_fetch_assoc($result);
 						<td><input type="text" name="usermail" value="<?php echo $row["customer_email"] ?>" readonly /></td>
 					</tr>
 					<tr>
-						<td>User IC</td>
+						<td>IC</td>
 						<td><input type="text" name="useric" value="<?php echo $row["customer_IC"] ?>" readonly /></td>
 					</tr>
 					<tr>
-						<td>User Contact Number</td>
+						<td>Contact Number</td>
 						<td><input type="text" name="userCNo" value="<?php echo $row["customer_contactNo"] ?>" readonly /></td>
 					</tr>
 					<tr>
-						<td>User Birthday</td>
+						<td>Birthday</td>
 						<td><input type="text" name="userbirthday" value="<?php echo $row["customer_birthday"] ?>" readonly /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" readonly /></td>
+						<td>
+							<input type="text" name="usera" value="<?php echo $row["customer_address"] ?>" readonly style="width: 200%;" />
+						</td>
 					</tr>
 					<tr>
 						<td>City</td>
