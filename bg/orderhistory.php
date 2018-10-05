@@ -72,8 +72,7 @@
 }
 .footer
 {
-	position: absolute;
-	bottom: 0;
+	margin-top: 5%;
 }
 </style>
 </head>
@@ -97,6 +96,7 @@
 				ORDER BY o.order_date DESC
 			";
 			$resultOrder = mysqli_query($conn, $sqlOrder);
+			$count = mysqli_num_rows($resultOrder);
 		?>
 		<div class="main">
 			<div class="left">
@@ -116,10 +116,11 @@
 						<th style="width: 10%">Status</th>
 					</tr>
 					<?php
+					$i = 1;
 					while($rowOrder = mysqli_fetch_assoc($resultOrder))
 					{
 						$orderID = $rowOrder["order_id"];
-						$i = 1;
+						
 					?>
 					<tr>
 						<td><?php echo $i; ?></td>
@@ -148,18 +149,24 @@
 							?>
 						</td>
 						<td style="text-align: center;"><?php echo $rowOrder["order_total_price"]; ?></td>
-						<td style="text-align: center;" id="status"><?php echo $rowOrder["status"]; ?></td>
-						<script type="text/javascript">
-							var status = <?php echo $rowOrder["order_status"]; ?>;
-							if(status == 1)
+						<?php
+							if($rowOrder["status"] == "Pending")
 							{
-								$("#status").css('color','red');
+						?>
+								<td style="text-align: center;color: orange;" id="status">
+									<?php echo $rowOrder["status"]; ?>
+								</td>
+						<?php
 							}
 							else
 							{
-								$("#status").css('color','green');
+						?>
+								<td style="text-align: center;color: green;" id="status">
+									<?php echo $rowOrder["status"]; ?>
+								</td>
+						<?php
 							}
-						</script>
+						?>
 					</tr>
 					<?php
 						$i++;
