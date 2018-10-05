@@ -114,16 +114,17 @@ button#btn:hover
 						<th style="width: 5%">#</th>
 						<th style="width: 12%">Order</th>
 						<th style="width: 10%">Date</th>
-						<th style="width: 25%">Product</th>
+						<th style="width: 20%">Product</th>
 						<th style="width: 12%">Payment(RM)</th>
 						<th style="width: 10%">Status</th>
-						<th style="width: 9%">Order By</th>
-						<th style="width: 9%">Approved By</th>
+						<th style="width: 11%">Order By</th>
+						<th style="width: 11%">Approved By</th>
 					</tr>
 					<?php
+					$i = 1;
 					while($rowOrder = mysqli_fetch_assoc($resultOrder))
 					{
-						$i = 1;
+						
 						$orderID = $rowOrder["order_id"];
 					?>
 						<tr>
@@ -153,26 +154,46 @@ button#btn:hover
 								?>
 							</td>
 							<td style="text-align: center;"><?php echo $rowOrder["order_total_price"]; ?></td>
-							<td style="text-align: center;" id="status"><?php echo $rowOrder["status"]; ?></td>
-							<td style="text-align: center;"><?php echo $rowOrder["customer_code"]; ?></td>
-							<td style="text-align: center;"><?php echo $rowOrder["approveBy"]; ?></td>
-							<td>
-								<button name="update" value="<?php echo $rowOrder["order_id"]; ?>" id="btn" onclick="return confirmation();">
-									Update
-								</button>
-							</td>
-							<script type="text/javascript">
-								var status = <?php echo $rowOrder["order_status"]; ?>;
-								if(status == 0)
+							<?php
+								if($rowOrder["status"] == "Pending")
 								{
-									$("#status").css('color','red');
+							?>
+									<td style="text-align: center;color: orange;" id="status">
+										<?php echo $rowOrder["status"]; ?>
+									</td>
+							<?php
 								}
 								else
 								{
-									$('#status').css('color','green');
-									$('#btn').css('display','none');
+							?>
+									<td style="text-align: center;color: green;" id="status">
+										<?php echo $rowOrder["status"]; ?>
+									</td>
+							<?php
 								}
-							</script>
+							?>
+							<td style="text-align: center;"><?php echo $rowOrder["customer_code"]; ?></td>
+							<td style="text-align: center;"><?php echo $rowOrder["approveBy"]; ?></td>
+							<td>
+							<?php
+								if($rowOrder["status"] == "Pending")
+								{
+							?>
+								<button name="update" value="<?php echo $rowOrder["order_id"]; ?>" id="btn" onclick="return confirmation();">
+									Update
+								</button>
+							<?php
+								}
+								else
+								{
+							?>
+								<button name="update" value="<?php echo $rowOrder["order_id"]; ?>" id="btn" onclick="return confirmation();" style="display: none;">
+									Update
+								</button>
+							<?php
+								}
+							?>
+							</td>
 						</tr>
 					<?php
 						$i++;

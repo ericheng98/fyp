@@ -102,7 +102,7 @@ input[type="submit"]:hover
 				<div id="alert-side" style="display:none;">
 					<p id="msg"></p>
 				</div>
-				<h1>Add NEW Admin/ Staff</h1>
+				<h1>Add new Admin/ Staff</h1>
 				<form method="POST" action="newstaff.php" name="addASForm" enctype="multipart/form-data">
 					<table>
 						<tr>
@@ -119,7 +119,7 @@ input[type="submit"]:hover
 						</tr>
 						<tr>
 							<td>I/C</td>
-							<td><input type="text" name="ic" maxlength="14" /></td>
+							<td><input type="text" name="ic" maxlength="14" pattern="[0-9]{12}" /></td>
 						</tr>
 						<tr>
 							<td>Join Date</td>
