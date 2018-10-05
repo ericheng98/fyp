@@ -117,7 +117,7 @@ table td p
 			<div class="details">
 				<div class="cardnumber">
 					<p>Card Number</p>
-					<p><input type="text" name="cardnumber" pattern="[0-9]{13, 16}" required /></p>
+					<p><input type="text" name="cardnumber" pattern="[0-9]{4} *[0-9]{4} *[0-9]{4} *[0-9]{4}" required /></p>
 				</div>
 				<div class="cardname">
 					<p>Name on Card</p>
@@ -126,8 +126,8 @@ table td p
 				<div class="cardexpiry">
 					<p>Expiry Date</p>
 					<p>
-						<input type="text" name="cardmm" placeholder="mm" required pattern="[0-9]{2}" max="12" />/&nbsp;  
-						<input type="text" name="cardyy" placeholder="yy" required pattern="[0-9]{2}" />
+						<input type="text" name="cardmm" placeholder="mm" required pattern="0[1-9]|1[012]" />/&nbsp;  
+						<input type="text" name="cardyy" placeholder="yy" required pattern="2[0-9]" />
 					</p>
 				</div>
 				<div class="ccv">

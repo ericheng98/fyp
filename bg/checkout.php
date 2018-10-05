@@ -241,7 +241,7 @@
 		$("table").css("display","none");
 		$(".address").css("display","none");
 		$("#checkoutbtn").css("display", "none");
-		// $('#csbtn').attr('value', 'SHOP NOW');
+		$('#csbtn').attr('value', 'SHOP NOW');
 	}
 	// $(document).on('click', '#csbtn', function()
 	// {
