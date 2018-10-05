@@ -205,13 +205,19 @@ if(isset($_POST["btn"]))
     }
 
     $encriptpw = md5($newpassword);
-
+    $useremail = "";
     if($_SESSION["sess_acc"] == "superuser")
     {
     	$sql =
     	"
     		UPDATE admin
     		SET admin_password = '$encriptpw'
+    		WHERE admin_id = $id
+    	";
+    	$sqlEmail =
+    	"
+    		SELECT admin_email AS email, admin_name AS name
+    		FROM admin
     		WHERE admin_id = $id
     	";
     }
@@ -224,14 +230,46 @@ if(isset($_POST["btn"]))
     		SET staff_password = '$encriptpw'
     		WHERE staff_id = $id
     	";
+    	$sqlEmail =
+    	"
+    		SELECT staff_email AS email, staff_name AS name
+    		FROM staff
+    		WHERE staff_id = $id
+    	";
     }
-    // echo $sql;die;
+    // echo $sqlEmail;die;
+    $resultEmail = mysqli_query($conn, $sqlEmail);
+    while($row = mysqli_fetch_assoc($resultEmail))
+    {
+    	$useremail = $row["email"];
+    	$username = $row["name"];
+    }
+
+    // echo $useremail;die;
+
     mysqli_query($conn, $sql);
+    
+    $subject = 'Hello from BULLs GAMING ONLINE STORE!';
+	$message = 
+	"
+	Hi, $username. 
+	Your password has been successfully reset.
+	Please copy down your new password for your futher login process.
+	New password : $newpassword.
+
+	Kindly please remember or copy down to prevent this kind of things happen again. Thank you.
+	";
+	$headers = "From: bullsgamingonlinegamestore@gmail.com\r\n";
+
+
+	if (mail($useremail, $subject, $message, $headers)) 
+	{
 ?>
 <script type="text/javascript">
-	alert("Password has been reset! New password : <?php echo $newpassword; ?>");
+	alert("Password has been reset and sent! Please refer to email inbox!");
 </script>
 <?php
+	}
 }
 
 if(isset($_POST["del"]))
