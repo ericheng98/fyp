@@ -260,9 +260,10 @@ if(isset($_POST["regbtn"]))
 						INSERT INTO customer 
 						(customer_code,customer_name,customer_birthday,customer_IC,customer_email,customer_password,customer_address,customer_country,customer_state,customer_city,customer_postcode,customer_contactNo) 
 						VALUES 
-						('$code',$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')
+						('$code','$username','$userbirthday','$usericno','$useremail','$userpassword','$useraddress','$usercountry','$userstate','$userc','$userpostcode','$userphoneno')
 					";
 					mysqli_query($conn,$sql2);
+					// echo $sql2;die;
 					?>
 					
 					<?php

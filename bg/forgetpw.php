@@ -45,7 +45,7 @@
 {font-size: 1.2em;
 }
 
-#title
+#top
 {font-size: 2.5em;
 }
 
@@ -56,10 +56,11 @@
 <body>
 	<div class="mainwrapper">
 		<?php
-			require 'html/header.html'; 
+			require 'html/header.html';
+			require 'include/identity.php'; 
 		?>
 		<div class="forgetpassword">
-			<p id="title">Forget Password</p>
+			<p id="top">Forget Password</p>
 			<div id="" >
 				<form name="loginfrm" method="post" action="">
 					<table>

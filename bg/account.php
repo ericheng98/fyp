@@ -61,9 +61,9 @@ $row = mysqli_fetch_assoc($result);
 .right tr td input[type=text]
 {
 	height: 30px;
-	width: 100%;
+	width: 150%;
 	margin: 10px 20px;
-	text-align: right;
+	text-align: left;
 }
 .right button
 {
@@ -96,7 +96,6 @@ $row = mysqli_fetch_assoc($result);
 				<ul>
 					<li><a href="account.php">My Account</a></li>
 					<li><a href="orderhistory.php">Order History</a></li>
-					<li><a href="#">Weekly Log</a></li>
 				<ul>
 			</div>
 			<div class="right">
@@ -144,7 +143,7 @@ $row = mysqli_fetch_assoc($result);
 					</tr>
 				</table>
 				<button name="editbtn" onclick="edit()">EDIT</button>
-				<button name="editpwbtn" onclick="editpw()">EDIT PASSWORD</button>
+				<button name="editpwbtn" onclick="editpw()">CHANGE PASSWORD</button>
 			</div>
 		</div>
 		<?php require 'html/footer.html' ?>
