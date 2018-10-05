@@ -18,10 +18,11 @@ $(document).on('click', '#pc', function()
 // 	window.location.replace("product.php?platform=all");
 // });
 
-$(document).bind("keydown", function(event)
+$("input#searchInput").keyup(function(event)
 {
-  if(event.which=="13")
+  if(event.which === "13")
    {
       $("#but").click();
-    }
+      console.log("123");
+   }
 });

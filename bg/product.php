@@ -132,6 +132,15 @@ div.img:hover
 				<br /><br /><br /><br /><br />
 				<?php
 					$orderStr = "ORDER BY p.product_name ASC";
+					if(isset($_REQUEST["search"]))
+					{
+						$search = $_REQUEST["search"];
+						$searchStr = " AND p.product_name LIKE \"%$search%\"";
+					}
+					else
+					{
+						$searchStr = "";
+					}
 
 					if(!isset($_REQUEST["platform"]) || $_REQUEST["platform"] == "all")
 					{
@@ -221,6 +230,7 @@ div.img:hover
 						WHERE p.product_isActive = 1
 						$where
 						$whereStr
+						$searchStr
 						$orderStr
 					"; 
 					// echo "<pre>$sqlDisplay</pre>";die;
