@@ -129,13 +129,14 @@
 						<th style="width: 10%">Release Date</th>
 						<th style="width: 10%">Edit/Remove</th>
 					</tr>
-				<?php  
+				<?php
+					$i = 1;  
 					while($row = mysqli_fetch_assoc($result))
 					{
 
 				?>
 					<tr>
-						<th><?php echo $row["product_id"]?></th>
+						<th><?php echo $i ?></th>
 						<td style="color: blue"><?php echo $row["product_code"]?></td>
 						<td><a href="#"><?php echo $row["product_name"]?></a></td>
 						<td><img src="image/<?php echo $row['product_image']?>"  class="ProductImg" /></td>
@@ -158,6 +159,7 @@
 						</td>
 					</tr>
 				<?php
+					$i++;
 					}
 				?>
 				</table>
