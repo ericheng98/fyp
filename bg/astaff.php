@@ -125,6 +125,7 @@
 				";
 			} 
 			$result = mysqli_query($conn, $sql);
+			$i = 1;
 		?>
 		<div class="main">
 			<div class="left">
@@ -155,7 +156,6 @@
 					<?php
 					while($row = mysqli_fetch_assoc($result))
 					{
-						$i = 1;
 					?>
 					<tr>
 						<td><?php echo $i; ?></td>

@@ -226,11 +226,31 @@ if(isset($_POST["addbtn"]))
 
 
 	$resultDuplicate = mysqli_query($conn, $sqlproduct);
-	if(mysqli_num_rows($resultDuplicate) != 0)
+	if($name == "")
+	{
+		$message = "Please enter name!";
+	}
+	else if($image == "")
+	{
+		$message = "Please upload picture!";
+	}
+	else if($email == "")
+	{
+		$message = "Please enter an email!";
+	}
+	else if($ic == "")
+	{
+		$message = "Please enter I/C!";
+	}
+	else if($joinDate == "")
+	{
+		$message = "PLease select join date!";
+	}
+	else if(mysqli_num_rows($resultDuplicate) != 0)
 	{
 		$message="Email existed!!";
 	}
-	else if($name != "" && $image != "" && $email != "" && $ic != "" && $joinDate != "")
+	else 
 	{
 		mysqli_query($conn, $sql);
 		if(move_uploaded_file($_FILES['image']['tmp_name'],$target))
