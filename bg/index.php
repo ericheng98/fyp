@@ -115,7 +115,7 @@ div.product2:hover
 		?>
 		</form>
 		<div class="slider">
-			<a href="#"><img src="image/sale.jpg"/></a>
+			<a href="#"><img src="image/FIFA19.jpg"/></a>
 		</div>
 		<div class="new">
 			<h2>NEWEST GAMES !!!</h2>
