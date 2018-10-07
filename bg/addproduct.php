@@ -84,6 +84,15 @@ input[type="submit"]:hover
 				header("Location: login.php");
 			}
 			require 'include/identity.php';
+			if(isset($_SESSION["sess_acc"]) == "staff")
+			{
+		?>
+				<script type="text/javascript">
+					alert("You dont have permission to add new product!!!");
+					window.location.replace("aorderhistory.php");
+				</script>
+		<?php
+			}
 		?>
 		<div class="main">
 

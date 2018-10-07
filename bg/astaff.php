@@ -95,6 +95,15 @@
 				header("Location: login.php");
 			}
 			require 'include/identity.php';
+			if(isset($_SESSION["sess_acc"]) == "staff")
+			{
+		?>
+				<script type="text/javascript">
+					alert("You dont have permission to view this page!!!");
+					window.location.replace("aorderhistory.php");
+				</script>
+		<?php
+			}
 			if($_SESSION["sess_acc"] == "superuser")
 			{
 				$sql = 

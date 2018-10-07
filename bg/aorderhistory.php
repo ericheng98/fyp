@@ -86,12 +86,12 @@ button#btn:hover
 			$sqlOrder =
 			"
 				SELECT o.*, c.customer_code,
-				IF(o.order_status = 0, ' - ', s.staff_code) AS approveBy,
+				IF(o.order_status = 0, ' - ', o.approvedBy) AS approveBy,
 				IF(o.order_status = 0, 'Pending', 'Delivered') AS status
 				FROM orders o
 				LEFT JOIN customer c ON o.customer_id = c.customer_id
-				LEFT JOIN staff s ON o.staff_id = s.staff_id
 			";
+			// echo $sqlOrder;die;
 			$resultOrder = mysqli_query($conn, $sqlOrder);
 		?>
 		<div class="main">
@@ -115,10 +115,10 @@ button#btn:hover
 						<th style="width: 12%">Order</th>
 						<th style="width: 10%">Date</th>
 						<th style="width: 20%">Product</th>
-						<th style="width: 12%">Payment(RM)</th>
-						<th style="width: 10%">Status</th>
+						<th style="width: 10%">Payment(RM)</th>
+						<th style="width: 8%">Status</th>
 						<th style="width: 11%">Order By</th>
-						<th style="width: 11%">Approved By</th>
+						<th style="width: 15%">Approved By</th>
 					</tr>
 					<?php
 					$i = 1;
@@ -220,11 +220,11 @@ function confirmation()
 if(isset($_POST["update"]))
 {
 	$oID = $_POST["update"];
-	$id = $_SESSION["sess_memid"];
+	$name = $_SESSION["username"];
 	$sqlUpdate = 
 	"
 		UPDATE orders 
-		SET order_status = 1, staff_id = $id
+		SET order_status = 1, approvedBy = \"$name\"
 		WHERE order_id = $oID
 	";
 	mysqli_query($conn, $sqlUpdate);

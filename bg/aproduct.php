@@ -180,20 +180,33 @@
 <?php 
 	if (isset($_REQUEST["pid"])) 
 	{
-		$pid = $_REQUEST["pid"];
-		$sqlDelete = 
-		"
-			UPDATE product
-			SET product_isActive = 0
-			WHERE product_id = $pid
-		";
-		mysqli_query($conn, $sqlDelete);
+		if($_SESSION["sess_acc"] == "staff")
+		{
 ?>
-	<script type="text/javascript">
-		alert("Product Deleted!");
-		setTimeout("window.location='aproduct.php'",10);
-		// window.location('aproduct.php');
-	</script>
+		<script type="text/javascript">
+			alert("You don't have permission to delete product!!");
+			setTimeout("window.location='aproduct.php'",10);
+			// window.location('aproduct.php');
+		</script>
 <?php
+		}
+		else
+		{
+			$pid = $_REQUEST["pid"];
+			$sqlDelete = 
+			"
+				UPDATE product
+				SET product_isActive = 0
+				WHERE product_id = $pid
+			";
+			mysqli_query($conn, $sqlDelete);
+?>
+		<script type="text/javascript">
+			alert("Product Deleted!");
+			setTimeout("window.location='aproduct.php'",10);
+			// window.location('aproduct.php');
+		</script>
+<?php
+		}
 	}
 ?>

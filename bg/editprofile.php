@@ -100,7 +100,7 @@ $row = mysqli_fetch_assoc($result);
 			<div class="left">
 				<ul>
 					<li><a href="account.php">My Account</a></li>
-					<li><a href="orderhistory.html">Order History</a></li>
+					<li><a href="orderhistory.php">Order History</a></li>
 				<ul>
 			</div>
 			<form name="edit" method="POST">
