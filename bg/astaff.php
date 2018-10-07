@@ -95,7 +95,7 @@
 				header("Location: login.php");
 			}
 			require 'include/identity.php';
-			if(isset($_SESSION["sess_acc"]) == "staff")
+			if($_SESSION["sess_acc"] == "staff")
 			{
 		?>
 				<script type="text/javascript">
