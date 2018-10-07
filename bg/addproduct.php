@@ -144,7 +144,7 @@ input[type="submit"]:hover
 									while($rowPlatform = mysqli_fetch_assoc($resultPlatform))
 									{
 								?>
-										<option value="<?php echo $rowPlatform["platform_code"]; ?>">
+										<option value="<?php echo $rowPlatform["platform_id"]; ?>">
 											<?php echo $rowPlatform["platform_code"]; ?>		
 										</option>
 								<?php
