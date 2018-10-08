@@ -139,7 +139,7 @@
 						<th><?php echo $i ?></th>
 						<td style="color: blue"><?php echo $row["product_code"]?></td>
 						<td><a href="#"><?php echo $row["product_name"]?></a></td>
-						<td><img src="image/<?php echo $row['product_image']?>"  class="ProductImg" /></td>
+						<td><img src="images/<?php echo $row['product_image']?>"  class="ProductImg" /></td>
 						<td class="align"><?php echo $row["platform_code"]?></td>
 						<td class="align"><?php echo $row["product_price"]?></td>
 						<td class="align"><?php echo $row["product_released_date"]?></td>

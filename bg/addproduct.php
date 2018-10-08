@@ -111,7 +111,7 @@ input[type="submit"]:hover
 				<div id="alert-side" style="display:none;">
 					<p id="msg"></p>
 				</div>
-				<h1>Add NEW Product</h1>
+				<h1>Add New Product</h1>
 				<form method="POST" action="addproduct.php" name="addProductForm" enctype="multipart/form-data">
 					<table>
 						<tr>
