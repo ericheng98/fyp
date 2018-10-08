@@ -207,7 +207,7 @@ if(isset($_POST["regbtn"]))
 
 	if(mysqli_num_rows($result) != 0)
 	{
-		$code = "P".$d."00".$num;
+		$code = "C".$d."00".$num;
 	}
 
 
