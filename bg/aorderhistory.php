@@ -90,6 +90,7 @@ button#btn:hover
 				IF(o.order_status = 0, 'Pending', 'Delivered') AS status
 				FROM orders o
 				LEFT JOIN customer c ON o.customer_id = c.customer_id
+				ORDER BY o.order_date DESC
 			";
 			// echo $sqlOrder;die;
 			$resultOrder = mysqli_query($conn, $sqlOrder);
